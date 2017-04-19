@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">হেলো গাড়ি</string>
+    <string name="hotline">হটলাইনঃ 01915857610</string>
+    <string name="title">ভাষা নির্বাচন করুন</string>
+    <string name="english">ইংরেজি</string>
+    <string name="bengali">বাংলা</string>
+    <string name="choose">নির্বাচন করুন</string>
+    <string name="call_hotline">হটলাইনে কল করতে চান ?</string>
+    <string name="user_name">ব্যবহারকারীর নাম</string>
+    <string name="password">পাসওয়ার্ড</string>
+    <string name="login">লগ ইন</string>
+    <string name="forget_pass">পাসওয়ার্ড ভুলে গেছেন ?</string>
+    <string name="no_account">অ্যাকাউন্ট নেই?</string>
+    <string name="registration">নিবন্ধন করুন</string>
+    <string name="name">পূর্ণ নাম</string>
+    <string name="phone">সক্রিয় মোবাইল নম্বর</string>
+    <string name="nid">জাতীয় পরিচয়পত্র</string>
+    <string name="postal_address">ঠিকানা</string>
+    <string name="emergency_contact_number">জরুরি যোগাযোগের নম্বর</string>
+    <string name="email">ই-মেইল</string>
+    <string name="repeat_password">পাসওয়ার্ড পুনরাবৃত্তি করুন</string>
+    <string name="title_activity_main">প্রোফাইল</string>
+    <string name="title_request_car">গাড়ীর জন্য অনুরোধ</string>
+    <string name="title_history">ইতিহাস</string>
+    <string name="title_settings">সেটিংস</string>
+</resources>

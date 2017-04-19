@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Hello Car</string>
+
+    <!--Splash Screen-->
+    <string name="hotline">Hotline: 01915857610</string>
+    <string name="title">Select Language</string>
+
+    <string name="english">English</string>
+    <string name="bengali">Bengali</string>
+
+    <array name="language">
+        <item>@string/english</item>
+        <item>@string/bengali</item>
+    </array>
+    <string name="choose">Choose</string>
+    <string name="call_hotline">Are you sure to  call hotline ?</string>
+    <string name="user_name">User Name</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="forget_pass">Forgot Password?</string>
+    <string name="no_account">Don\'t have account?</string>
+    <string name="registration">Registration</string>
+    <string name="name">Full Name</string>
+    <string name="phone">Active Mobile Number</string>
+    <string name="nid">NID</string>
+    <string name="postal_address">Postal address</string>
+    <string name="emergency_contact_number">Emergency contact number</string>
+    <string name="email">Email</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="title_activity_main">Profile</string>
+    <string name="title_request_car">Request car</string>
+    <string name="title_profile" translatable="false">@string/title_activity_main</string>
+    <string name="title_history">History</string>
+    <string name="title_settings">Settings</string>
+
+</resources>
