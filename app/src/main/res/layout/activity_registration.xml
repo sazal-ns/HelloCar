@@ -39,7 +39,8 @@
             android:src="@drawable/ic_file_upload_yellow_a200_24dp"
             android:background="@android:color/transparent"
             app:layout_constraintRight_toRightOf="@+id/thumbnailImageView"
-            app:layout_constraintBottom_toBottomOf="@+id/thumbnailImageView"/>
+            app:layout_constraintBottom_toBottomOf="@+id/thumbnailImageView"
+            android:onClick="onViewClicked"/>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/nameTextInputLayout"
@@ -84,7 +85,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/numberTextInputLayout">
             <EditText
-                android:id="@+id/hidEditText"
+                android:id="@+id/nidEditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="numberSigned|numberDecimal"
@@ -189,7 +190,8 @@
             android:layout_marginTop="@dimen/margin_24"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/repeatPasswordTextInputLayout"/>
+            app:layout_constraintTop_toBottomOf="@+id/repeatPasswordTextInputLayout"
+            android:onClick="onViewClicked"/>
     </android.support.constraint.ConstraintLayout>
 
 </ScrollView>

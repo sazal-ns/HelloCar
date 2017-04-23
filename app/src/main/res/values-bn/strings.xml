@@ -24,4 +24,8 @@
     <string name="title_request_car">গাড়ীর জন্য অনুরোধ</string>
     <string name="title_history">ইতিহাস</string>
     <string name="title_settings">সেটিংস</string>
+    <string name="update">হালনাগাদ</string>
+    <string name="log_out">প্রস্থান</string>
+    <string name="change_language">ভাষা পরিবর্তন করুন</string>
+    <string name="invalid_number">সংখ্যাটি সঠিক নয়</string>
 </resources>

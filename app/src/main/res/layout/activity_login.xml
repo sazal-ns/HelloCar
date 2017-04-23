@@ -77,7 +77,7 @@
             android:textSize="@dimen/text_15"
             android:layout_marginTop="@dimen/default_margin_gap"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/passwordTextInputLayout"
+            app:layout_constraintTop_toBottomOf="@+id/passwordTextInputLayout"
             android:onClick="onViewClicked"/>
 
         <LinearLayout
@@ -85,7 +85,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/loginAppCompatButton"
+            app:layout_constraintTop_toBottomOf="@+id/loginAppCompatButton"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">
             <TextView
@@ -122,7 +122,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/noAccountLinearLayout"
+            app:layout_constraintTop_toBottomOf="@+id/noAccountLinearLayout"
             android:onClick="onViewClicked"/>
 
     </android.support.constraint.ConstraintLayout>

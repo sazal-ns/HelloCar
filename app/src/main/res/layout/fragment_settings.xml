@@ -1,0 +1,120 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    tools:context="com.rtsoftbd.siddiqui.hellocar.SettingsFragment">
+
+   <android.support.constraint.ConstraintLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+
+       <android.support.design.widget.TextInputLayout
+           android:id="@+id/userNameTextInputLayout"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           app:layout_constraintLeft_toLeftOf="parent"
+           app:layout_constraintRight_toRightOf="parent"
+           app:layout_constraintTop_toTopOf="parent">
+           <EditText
+               android:id="@+id/usernameEditText"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:hint="@string/user_name"
+               android:inputType="text"
+               android:clickable="false"
+               android:focusable="false"/>
+       </android.support.design.widget.TextInputLayout>
+
+       <android.support.design.widget.TextInputLayout
+           android:id="@+id/emailTextInputLayout"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           app:layout_constraintLeft_toLeftOf="parent"
+           app:layout_constraintRight_toRightOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/userNameTextInputLayout">
+           <EditText
+               android:id="@+id/emailEditText"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:hint="@string/email"
+               android:inputType="textEmailAddress"/>
+       </android.support.design.widget.TextInputLayout>
+
+       <android.support.design.widget.TextInputLayout
+           android:id="@+id/passwordTextInputLayout"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           app:layout_constraintLeft_toLeftOf="parent"
+           app:layout_constraintRight_toRightOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/emailTextInputLayout">
+           <EditText
+               android:id="@+id/passwordEditText"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:hint="@string/password"
+               android:inputType="textPassword"/>
+       </android.support.design.widget.TextInputLayout>
+
+       <android.support.v7.widget.AppCompatButton
+           android:id="@+id/updateAppCompatButton"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:text="@string/update"
+           android:layout_marginTop="@dimen/default_margin_gap"
+           app:layout_constraintLeft_toLeftOf="parent"
+           app:layout_constraintRight_toRightOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/passwordTextInputLayout"/>
+
+       <View
+           android:id="@+id/horizontalLine"
+           android:layout_width="0dp"
+           android:layout_height="2dp"
+           android:background="@color/black"
+           android:layout_marginTop="@dimen/margin_24"
+           app:layout_constraintLeft_toLeftOf="parent"
+           app:layout_constraintRight_toRightOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/updateAppCompatButton"/>
+
+       <android.support.v7.widget.AppCompatButton
+           android:id="@+id/logoutAppCompatButton"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:text="@string/log_out"
+           android:layout_marginTop="@dimen/margin_24"
+           android:backgroundTint="@color/red"
+           android:textColor="@android:color/white"
+           android:textStyle="bold"
+           android:textSize="@dimen/text_15"
+           app:layout_constraintLeft_toLeftOf="parent"
+           app:layout_constraintRight_toRightOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/horizontalLine"
+           tools:targetApi="lollipop" />
+
+       <TextView
+           android:id="@+id/changeLanguageTextView"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:text="@string/change_language"
+           android:textSize="@dimen/default_text"
+           android:layout_marginTop="35dp"
+           app:layout_constraintLeft_toLeftOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/logoutAppCompatButton"
+           app:layout_constraintRight_toLeftOf="@+id/changeLanguageToggleButton"/>
+
+       <ToggleButton
+           android:id="@+id/changeLanguageToggleButton"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:textOn="@string/english"
+           android:textOff="@string/bengali"
+           android:layout_marginTop="@dimen/margin_24"
+           app:layout_constraintLeft_toRightOf="@+id/changeLanguageTextView"
+           app:layout_constraintTop_toBottomOf="@+id/logoutAppCompatButton"
+           app:layout_constraintRight_toRightOf="parent" />
+
+   </android.support.constraint.ConstraintLayout>
+
+
+</ScrollView>
