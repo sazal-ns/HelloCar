@@ -28,4 +28,12 @@
     <string name="log_out">প্রস্থান</string>
     <string name="change_language">ভাষা পরিবর্তন করুন</string>
     <string name="invalid_number">সংখ্যাটি সঠিক নয়</string>
+    <string name="required">প্রয়োজনীয়</string>
+    <string name="emg_person_contact">জরুরী ব্যক্তি যোগাযোগ প্রদান</string>
+    <string name="invalid_email">ভুল ইমেইল</string>
+    <string name="not_same">এক না</string>
+    <string name="file_size">সর্বাধিক ফাইলের আকার 2MB নির্বাচিত চিত্রের আকার হল</string>
+    <string name="error">ত্রুটি ঘটেছে</string>
+    <string name="registration_failed">রেজিস্ট্রেশন ব্যর্থ হয়েছে</string>
+    <string name="no_active_internet">কোনও সক্রিয় ইন্টারনেট নেই</string>
 </resources>

@@ -1,28 +1,36 @@
 package com.rtsoftbd.siddiqui.hellocar;
 
-import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v13.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.rtsoftbd.siddiqui.hellocar.helpingHand.ApplicationController;
+import com.rtsoftbd.siddiqui.hellocar.helpingHand.Boo;
+import com.rtsoftbd.siddiqui.hellocar.helpingHand.CallHotLine;
+import com.rtsoftbd.siddiqui.hellocar.helpingHand.Messages;
+import com.rtsoftbd.siddiqui.hellocar.models.CarType;
+import com.rtsoftbd.siddiqui.hellocar.models.DurationAndCost;
+import com.rtsoftbd.siddiqui.hellocar.models.UsingType;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,12 +43,8 @@ public class SplashActivity extends AppCompatActivity {
     private static final String SP = "ms";
     private static final String PREF_KEY_SHORTCUT_ADDED = "PREF_KEY_SHORTCUT_ADDED";
 
-    private static final int CALL_PERMISSION_CONSTANT = 100;
-    private static final int REQUEST_PERMISSION_SETTING = 101;
-    private boolean sentToSettings = false;
-    private Intent callIntent;
-
     @BindView(R.id.hotlineTitleTextView) TextView ms_HotlineTitleTextView;
+    @BindView(R.id.progressBar) ProgressBar ms_ProgressBar;
 
     private SharedPreferences.Editor editor;
     private SharedPreferences sp;
@@ -50,6 +54,8 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
+
+        ms_ProgressBar.setVisibility(View.INVISIBLE);
 
         sp = getSharedPreferences(SP, MODE_PRIVATE);
         editor = sp.edit();
@@ -77,7 +83,8 @@ public class SplashActivity extends AppCompatActivity {
                         editor.putString("language", language);
                         editor.apply();
 
-                        // TODO: Load all categories here
+                        ms_ProgressBar.setVisibility(View.VISIBLE);
+                        /*loadDate();*/
                         startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                         finish();
 
@@ -85,144 +92,121 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 })
                 .positiveText(R.string.choose)
+                .cancelable(false)
                 .show();
 
 
+    }
+
+    private void loadDate() {
+        final StringRequest requestCarType = new StringRequest(Request.Method.POST, Boo.BAG, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray array = new JSONArray(response);
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject jsonObject = array.getJSONObject(i);
+                        CarType carType = new CarType(jsonObject.getString(Boo.REPLAY_CAR_TYPE_NAME),
+                                jsonObject.getInt(Boo.REPLAY_CAR_TYPE_ID));
+                        CarType.setCarTypes(carType);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error.getMessage().contains("Unable to resolve host"))
+                    new Messages(SplashActivity.this).NoInternet();
+                error.printStackTrace();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put(Boo.KEY_TABLE, Boo.CAR_TYPE);
+
+                return params;
+            }
+        };
+
+        final StringRequest requestDurationAndCost = new StringRequest(Request.Method.POST, Boo.BAG, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray array = new JSONArray(response);
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject jsonObject = array.getJSONObject(i);
+                        DurationAndCost durationAndCost = new DurationAndCost(jsonObject.getString(Boo.REPLAY_DURATION_NAME), jsonObject.getInt(Boo.REPLAY_DURATION_ID),
+                                jsonObject.getInt(Boo.REPLAY_DURATION_TYPE_ID), jsonObject.getInt(Boo.REPLAY_COST));
+                        DurationAndCost.setDurationAndCosts(durationAndCost);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error.getMessage().contains("Unable to resolve host"))
+                    new Messages(SplashActivity.this).NoInternet();
+                error.printStackTrace();
+                error.printStackTrace();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put(Boo.KEY_TABLE, Boo.DURATION);
+
+                return params;
+            }
+        };
+
+        final StringRequest requestUsingType = new StringRequest(Request.Method.POST, Boo.BAG, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray array = new JSONArray(response);
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject jsonObject = array.getJSONObject(i);
+                        UsingType usingType = new UsingType(jsonObject.getInt(Boo.REPLAY_USING_TYPE_ID), jsonObject.getString(Boo.REPLAY_USING_TYPE_NAME));
+                        UsingType.setUsingTypes(usingType);
+
+                       /* startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                        finish();*/
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error.getMessage().contains("Unable to resolve host"))
+                    new Messages(SplashActivity.this).NoInternet();
+                error.printStackTrace();
+                error.printStackTrace();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put(Boo.KEY_TABLE, Boo.USING_TYPE);
+
+                return params;
+            }
+        };
+
+        ApplicationController.getInstance().addToRequestQueue(requestCarType, TAG);
+        ApplicationController.getInstance().addToRequestQueue(requestDurationAndCost, TAG);
+        ApplicationController.getInstance().addToRequestQueue(requestUsingType, TAG);
     }
 
     @OnClick(R.id.hotlineTitleTextView)
     public void onViewClicked() {
-        String number[] = ms_HotlineTitleTextView.getText().toString().trim().split(" ");
-
-        callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:"+number[1]));
-
-        if (ActivityCompat.checkSelfPermission(SplashActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(SplashActivity.this, Manifest.permission.CALL_PHONE)){
-                AlertDialog.Builder builder = new AlertDialog.Builder(SplashActivity.this);
-                builder.setTitle("Need Call Phone Permission");
-                builder.setMessage("To directly dial number, this app needs call phone permission.");
-                builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        ActivityCompat.requestPermissions(SplashActivity.this, new String[]{Manifest.permission.CALL_PHONE},
-                                CALL_PERMISSION_CONSTANT);
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                builder.show();
-            }else if (sp.getBoolean(Manifest.permission.CALL_PHONE,false)){
-                AlertDialog.Builder builder = new AlertDialog.Builder(SplashActivity.this);
-                builder.setTitle("Need Call Phone Permission");
-                builder.setMessage("To directly dial number, this app needs call phone permission.");
-                builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        sentToSettings = true;
-                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        Uri uri = Uri.fromParts("package", getPackageName(), null);
-                        intent.setData(uri);
-                        startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
-                        Toast.makeText(getBaseContext(), "Go to Permissions to Grant Storage", Toast.LENGTH_LONG).show();
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                builder.show();
-            }else {
-                ActivityCompat.requestPermissions(SplashActivity.this, new String[]{Manifest.permission.CALL_PHONE},
-                        CALL_PERMISSION_CONSTANT);
-            }
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putBoolean(Manifest.permission.CALL_PHONE,true);
-            editor.apply();
-        }else call();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == CALL_PERMISSION_CONSTANT){
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                call();
-            }else {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(SplashActivity.this, Manifest.permission.CALL_PHONE)){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(SplashActivity.this);
-                    builder.setTitle("Need Call Phone Permission");
-                    builder.setMessage("To directly dial number, this app needs call phone permission.");
-                    builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-
-                            ActivityCompat.requestPermissions(SplashActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                    CALL_PERMISSION_CONSTANT);
-
-                        }
-                    });
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-                    builder.show();
-                }else new MaterialDialog.Builder(SplashActivity.this)
-                            .title("Sorry")
-                            .content("We Can't Call Directly from app.")
-                            .show();
-
-            }
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_PERMISSION_SETTING){
-            if (ActivityCompat.checkSelfPermission(SplashActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED){
-                call();
-            }
-        }
-    }
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        if (sentToSettings){
-            if (ActivityCompat.checkSelfPermission(SplashActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                call();
-            }
-        }
-    }
-
-    private void call(){
-       new MaterialDialog.Builder(this)
-                .content(R.string.call_hotline)
-                .positiveText("Call")
-                .positiveColor(Color.parseColor("#6dc390"))
-                .negativeText("Cancel")
-                .negativeColor(Color.RED)
-                .cancelable(false)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                        startActivity(callIntent);
-                    }
-                })
-                .show();
+        new CallHotLine(SplashActivity.this);
     }
 
     private void addShortCut() {

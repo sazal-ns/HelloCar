@@ -1,18 +1,44 @@
 package com.rtsoftbd.siddiqui.hellocar;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ToggleButton;
+
+import java.util.Locale;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class SettingsFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private static final String SP = "ms";
+
+    @BindView(R.id.usernameEditText) EditText ms_UsernameEditText;
+    @BindView(R.id.emailEditText) EditText ms_EmailEditText;
+    @BindView(R.id.passwordEditText) EditText ms_PasswordEditText;
+    @BindView(R.id.updateAppCompatButton) AppCompatButton ms_UpdateAppCompatButton;
+    @BindView(R.id.logoutAppCompatButton) AppCompatButton ms_LogoutAppCompatButton;
+    Unbinder unbinder;
+
+
+    private String language;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -45,7 +71,11 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        unbinder = ButterKnife.bind(this, view);
+
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -64,6 +94,12 @@ public class SettingsFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     interface OnFragmentInteractionListener {

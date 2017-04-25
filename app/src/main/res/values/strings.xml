@@ -39,5 +39,16 @@
     <string name="log_out">Log Out</string>
     <string name="change_language">Change language</string>
     <string name="invalid_number">invalid number</string>
+    <string name="required">required</string>
+    <string name="emg_person_contact">provide emergency person contact</string>
+    <string name="invalid_email">invalid email</string>
+    <string name="not_same">not same</string>
+    <string name="file_size">Maximum file size is 2MB. Selected image size is</string>
+    <string name="error">Error Occurred</string>
+    <string name="registration_failed">Registration Failed</string>
+    <string name="no_active_internet">No Active Internet</string>
+    <string name="title_activity_test">testActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 
 </resources>

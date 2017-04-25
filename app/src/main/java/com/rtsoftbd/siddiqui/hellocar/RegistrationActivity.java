@@ -1,5 +1,6 @@
 package com.rtsoftbd.siddiqui.hellocar;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.database.Cursor;
@@ -13,14 +14,22 @@ import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
+import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.telephony.PhoneNumberUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.rtsoftbd.siddiqui.hellocar.helpingHand.AndroidMultiPartEntity;
+import com.rtsoftbd.siddiqui.hellocar.helpingHand.Boo;
+import com.rtsoftbd.siddiqui.hellocar.helpingHand.CallHotLine;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -41,6 +50,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,11 +74,10 @@ public class RegistrationActivity extends AppCompatActivity {
     @BindView(R.id.repeatPasswordEditText) EditText ms_RepeatPasswordEditText;
     @BindView(R.id.registrationAppCompatButton) AppCompatButton ms_RegistrationAppCompatButton;
 
-    private String imagePath, name, address, email, userName, password, repeatPassword;
-    private int nid, number, emg_number;
+    private String imagePath, name, address, email, userName, password, repeatPassword, nid, number, emg_number, path;
 
     private  long totalSize = 0;
-    private ProgressBar progressBar;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +85,7 @@ public class RegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
         ButterKnife.bind(this);
 
-        saveImage(getBitmapFromAsset("user.png"),
-                "user.png");
+        saveImage(getBitmapFromAsset("user.png"), "user.png");
     }
 
     private Bitmap getBitmapFromAsset(String strName) {
@@ -101,10 +109,9 @@ public class RegistrationActivity extends AppCompatActivity {
     private void saveImage(Bitmap finalBitmap, String imageName) {
         File sdCard = Environment.getExternalStorageDirectory();
         File myDir = new File(sdCard.getAbsolutePath() +"/"+ getPackageName());
-        String path = myDir.getPath();
+        path = myDir.getPath();
         myDir.mkdirs();
 
-        // String fname = "save_fatwa.jpg";
         File file = new File(myDir, imageName);
         if (file.exists()) {
             Log.i("file exists", "" + imageName);
@@ -145,32 +152,73 @@ public class RegistrationActivity extends AppCompatActivity {
         userName = ms_UsernameEditText.getText().toString().trim();
         password = ms_PasswordEditText.getText().toString().trim();
         repeatPassword = ms_RepeatPasswordEditText.getText().toString().trim();
+        number = ms_NumberEditText.getText().toString().trim();
+        nid = ms_NidEditText.getText().toString().trim();
+        emg_number = ms_EmgContactEditText.getText().toString().trim();
 
-        try {
-            nid = Integer.parseInt(ms_NidEditText.getText().toString().trim());
-            ms_NidEditText.setError(null);
-        }catch (NumberFormatException e){
-            ms_NidEditText.setError(getResources().getString(R.string.invalid_number));
-            e.printStackTrace();
-        }
 
-        try {
-            number = Integer.parseInt(ms_NumberEditText.getText().toString().trim());
-            ms_NumberEditText.setError(null);
-        }catch (NumberFormatException e){
-            ms_NumberEditText.setError(getResources().getString(R.string.invalid_number));
-            e.printStackTrace();
-        }
-
-        try {
-            emg_number = Integer.parseInt(ms_EmgContactEditText.getText().toString().trim());
-            ms_EmgContactEditText.setError(null);
-        }catch (NumberFormatException e){
-            ms_EmgContactEditText.setError(getResources().getString(R.string.invalid_number));
-            e.printStackTrace();
-        }
-
+        if (valid())
         new UploadFileToServer().execute();
+    }
+
+    private boolean valid() {
+        boolean valid = true;
+
+        if (name.isEmpty() || name.length() <3){
+            ms_NameEditText.setError(getResources().getString(R.string.required));
+            valid = false;
+        }else ms_NameEditText.setError(null);
+
+        if (!number.matches("^01[15-9]\\d{8}$")){
+            ms_NumberEditText.setError(getResources().getString(R.string.invalid_number));
+            valid = false;
+        }else  ms_NumberEditText.setError(null);
+
+        if (!emg_number.matches("^01[15-9]\\d{8}$")){
+            ms_EmgContactEditText.setError(getResources().getString(R.string.invalid_number));
+            valid = false;
+        }else ms_EmgContactEditText.setError(null);
+
+        if (!nid.matches("^\\d{17}$")){
+            ms_NidEditText.setError(getResources().getString(R.string.invalid_number));
+            valid = false;
+        }else ms_NidEditText.setError(null);
+
+        if (address.isEmpty()){
+            ms_AddressEditText.setError(getResources().getString(R.string.required));
+            valid = false;
+        }else ms_AddressEditText.setError(null);
+
+        if (emg_number.contentEquals(number)){
+            ms_EmgContactEditText.setError(getResources().getString(R.string.emg_person_contact));
+            valid = false;
+        }else ms_EmgContactEditText.setError(null);
+
+        if (!email.isEmpty())
+            if (!email.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"+"[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")){
+                ms_EmailEditText.setError(getResources().getString(R.string.invalid_email));
+                valid = false;
+            }else ms_EmailEditText.setError(null);
+
+        if (userName.isEmpty()){
+            ms_UsernameEditText.setError(getResources().getString(R.string.required));
+            valid = false;
+        }else ms_UsernameEditText.setError(null);
+
+        if (password.isEmpty()) {
+            ms_PasswordEditText.setError(getResources().getString(R.string.required));
+            valid = false;
+        }else ms_PasswordEditText.setError(null);
+
+        if (repeatPassword.isEmpty()){
+            ms_RepeatPasswordEditText.setError(getResources().getString(R.string.required));
+            valid = false;
+        }else if (!password.contentEquals(repeatPassword)){
+            ms_RepeatPasswordEditText.setError(getResources().getString(R.string.not_same));
+            valid = false;
+        }else  ms_RepeatPasswordEditText.setError(null);
+
+        return valid;
     }
 
     @Override
@@ -188,9 +236,22 @@ public class RegistrationActivity extends AppCompatActivity {
             imagePath = cursor.getString(columnIndex);
             cursor.close();
 
+            File sourceFile = new File(imagePath);
+            double fileSize = (sourceFile.length() / 1024.0) /1024.0;
+            if (fileSize >= 2.0 ){
+                Log.i(TAG, String.valueOf(fileSize));
+                new MaterialDialog.Builder(RegistrationActivity.this)
+                        .cancelable(true)
+                        .content(getResources().getString(R.string.file_size)+" "+ String.valueOf(fileSize))
+                        .show();
+                imagePath = path.concat("/user.png");
+                return;
+            }
+
             Bitmap bmp = null;
             try {
                 bmp = getBitmapFromUri(selectedImage);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -213,6 +274,10 @@ public class RegistrationActivity extends AppCompatActivity {
         protected void onPreExecute() {
             // setting progress bar to zero
             //progressBar.setProgress(0);
+            progressDialog = new ProgressDialog(RegistrationActivity.this);
+            progressDialog.setMax(100);
+            progressDialog.setProgress(0);
+            progressDialog.show();
             super.onPreExecute();
         }
 
@@ -226,6 +291,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
             // updating percentage value
            // txtPercentage.setText(String.valueOf(progress[0]) + "%");
+            progressDialog.setMessage("Uploading & Sing Up . . . "+ progress[0] );
         }
 
         @Override
@@ -238,7 +304,7 @@ public class RegistrationActivity extends AppCompatActivity {
             String responseString = null;
 
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://hellocar.ga/Mobile_api/user_register");
+            HttpPost httppost = new HttpPost(Boo.REG);
 
             try {
                 AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
@@ -251,20 +317,19 @@ public class RegistrationActivity extends AppCompatActivity {
                         });
 
                 File sourceFile = new File(imagePath);
-                Log.i(TAG, imagePath);
                 // Adding file data to http body
-                entity.addPart("userfile", new FileBody(sourceFile));
+                entity.addPart(Boo.KEY_USER_FILE, new FileBody(sourceFile));
 
                 // Extra parameters if you want to pass to server
                // entity.addPart("userfile", new StringBody(sourceFile.getName()));
-                entity.addPart("User_Address", new StringBody(address));
-                entity.addPart("User_Emergncy_Number", new StringBody(String.valueOf(emg_number)));
-                entity.addPart("User_Email", new StringBody(email));
-                entity.addPart("User_NID", new StringBody(String.valueOf(nid)));
-                entity.addPart("Mobile_Number", new StringBody(String.valueOf(number)));
-                entity.addPart("Full_Name", new StringBody(name));
-                entity.addPart("User_Password", new StringBody(password));
-                entity.addPart("User_Name", new StringBody(userName));
+                entity.addPart(Boo.KEY_USER_ADDRESS, new StringBody(address));
+                entity.addPart(Boo.KEY_USER_EMERGENCY_NUMBER, new StringBody(String.valueOf(emg_number)));
+                entity.addPart(Boo.KEY_USER_EMAIL, new StringBody(email));
+                entity.addPart(Boo.KEY_USER_NID, new StringBody(String.valueOf(nid)));
+                entity.addPart(Boo.KEY_MOBILE_NUMBER, new StringBody(String.valueOf(number)));
+                entity.addPart(Boo.KEY_FULL_NAME, new StringBody(name));
+                entity.addPart(Boo.KEY_USER_PASSWORD, new StringBody(password));
+                entity.addPart(Boo.KEY_USER_NAME, new StringBody(userName));
 
 
                 totalSize = entity.getContentLength();
@@ -297,13 +362,36 @@ public class RegistrationActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             Log.e(TAG, "Response from server: " + result);
 
-            // showing the server response in an alert dialog
-           // showAlert(result);
+            if (result.contains("Data Successfully Sent")){
+                startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
+                finish();
+            }else new MaterialDialog.Builder(RegistrationActivity.this)
+                    .title(getResources().getString(R.string.error))
+                    .content(getResources().getString(R.string.registration_failed))
+                    .icon(getResources().getDrawable(R.drawable.ic_error_red_a700_36dp))
+                    .show();
 
+            progressDialog.dismiss();
             super.onPostExecute(result);
         }
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.hotline, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.navigation_hotline:
+                new CallHotLine(RegistrationActivity.this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }

@@ -92,27 +92,6 @@
            app:layout_constraintTop_toBottomOf="@+id/horizontalLine"
            tools:targetApi="lollipop" />
 
-       <TextView
-           android:id="@+id/changeLanguageTextView"
-           android:layout_width="0dp"
-           android:layout_height="wrap_content"
-           android:text="@string/change_language"
-           android:textSize="@dimen/default_text"
-           android:layout_marginTop="35dp"
-           app:layout_constraintLeft_toLeftOf="parent"
-           app:layout_constraintTop_toBottomOf="@+id/logoutAppCompatButton"
-           app:layout_constraintRight_toLeftOf="@+id/changeLanguageToggleButton"/>
-
-       <ToggleButton
-           android:id="@+id/changeLanguageToggleButton"
-           android:layout_width="0dp"
-           android:layout_height="wrap_content"
-           android:textOn="@string/english"
-           android:textOff="@string/bengali"
-           android:layout_marginTop="@dimen/margin_24"
-           app:layout_constraintLeft_toRightOf="@+id/changeLanguageTextView"
-           app:layout_constraintTop_toBottomOf="@+id/logoutAppCompatButton"
-           app:layout_constraintRight_toRightOf="parent" />
 
    </android.support.constraint.ConstraintLayout>
 

@@ -5,10 +5,15 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.rtsoftbd.siddiqui.hellocar.helpingHand.CallHotLine;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,12 +42,32 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(this, MainActivity.class));
                 break;
             case R.id.forgetTextView:
+                startActivity(new Intent(this, testActivity.class));
                 break;
             case R.id.regTextView:
                 startActivity(new Intent(this, RegistrationActivity.class));
                 break;
             case R.id.hotlineTitleTextView:
+                new CallHotLine(this);
                 break;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.hotline, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.navigation_hotline:
+                new CallHotLine(this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
