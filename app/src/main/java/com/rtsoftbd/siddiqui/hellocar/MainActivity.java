@@ -24,10 +24,16 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_request_car:
+                    transaction = fragmentManager.beginTransaction();
+                    transaction.replace(R.id.content, new RequestCarFragment()).commit();
                     return true;
                 case R.id.navigation_profile:
+                    transaction = fragmentManager.beginTransaction();
+                    transaction.replace(R.id.content, new ProfileFragment()).commit();
                     return true;
                 case R.id.navigation_history:
+                    transaction = fragmentManager.beginTransaction();
+                    transaction.replace(R.id.content, new HistoryFragment()).commit();
                     return true;
                 case R.id.navigation_settings:
                     transaction = fragmentManager.beginTransaction();
@@ -49,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
 
+        transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.content, new RequestCarFragment()).commit();
     }
 
     @Override

@@ -36,4 +36,16 @@
     <string name="error">ত্রুটি ঘটেছে</string>
     <string name="registration_failed">রেজিস্ট্রেশন ব্যর্থ হয়েছে</string>
     <string name="no_active_internet">কোনও সক্রিয় ইন্টারনেট নেই</string>
+    <string name="pending">অনিষ্পন্ন</string>
+    <string name="cancel">বাতিল</string>
+    <string name="reject">প্রত্যাখ্যান</string>
+    <string name="accept">গৃহীত</string>
+    <string name="success">সাফল্য</string>
+    <string name="profile_updated">প্রোফাইল আপডেট</string>
+    <string name="request_your_transport">আপনার পরিবহনের জন্য অনুরোধ করুন</string>
+    <string name="from">থেকে</string>
+    <string name="to">পর্যন্ত</string>
+    <string name="date">ভ্রমণের তারিখ</string>
+    <string name="time">ভ্রমণের সময়</string>
+    <string name="sent_request">অনুরোধ পাঠান</string>
 </resources>

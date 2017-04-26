@@ -174,8 +174,8 @@ public class SplashActivity extends AppCompatActivity {
                         UsingType usingType = new UsingType(jsonObject.getInt(Boo.REPLAY_USING_TYPE_ID), jsonObject.getString(Boo.REPLAY_USING_TYPE_NAME));
                         UsingType.setUsingTypes(usingType);
 
-                       /* startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                        finish();*/
+                        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                        finish();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

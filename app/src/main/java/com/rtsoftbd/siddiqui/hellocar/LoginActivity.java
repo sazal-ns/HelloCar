@@ -42,7 +42,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(this, MainActivity.class));
                 break;
             case R.id.forgetTextView:
-                startActivity(new Intent(this, testActivity.class));
                 break;
             case R.id.regTextView:
                 startActivity(new Intent(this, RegistrationActivity.class));
