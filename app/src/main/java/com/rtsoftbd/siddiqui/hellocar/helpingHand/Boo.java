@@ -7,9 +7,25 @@ package com.rtsoftbd.siddiqui.hellocar.helpingHand;
 public final class Boo {
     private static final String BASE = "http://hellocar.ga/Mobile_api/";
 
-    public static final String REG = BASE.concat("user_register");
-    public static final String BAG = BASE.concat("databag");
-    public static final String REQUEST = BASE.concat("request_state");
+    public static final String PICTURE_URL = "http://hellocar.ga/assets/uploads/user/";
+
+    public static final String MS_REG = BASE.concat("user_register");
+    public static final String MS_BAG = BASE.concat("databag");
+    public static final String MS_HISTORY = BASE.concat("request_state");
+    public static final String MS_LOGIN = BASE.concat("loginverification");
+    public static final String MS_REQUEST_CAR = BASE.concat("carRequest");
+    public static final String MS_IS_CANCEL_REQUEST = BASE.concat("cancel_request");
+    public static final String MS_CANCEL_REQUEST = BASE.concat("update_request");
+    public static final String MS_UPDATE_SAFETY = BASE.concat("update_savety");
+    public static final String MS_UPDATE_PROFILE = BASE.concat("user_profile_update");
+    public static final String MS_UPDATE_PIN = BASE.concat("update_pin_state");
+
+    /*Update Safety*/
+    public static final String KEY_EMAIL = "email";
+
+    /*login*/
+    public static final String KEY_LOGIN_USER_NAME = "username";
+    public static final String KEY_LOGIN_PASSWORD = "password";
 
     /*Reg*/
     public static final String KEY_USER_FILE = "userfile";
@@ -29,6 +45,9 @@ public final class Boo {
     public static final String KEY_STATE = "state";
     /*sender*/
 
+    /*Common Key*/
+    public static final String KEY_ID = "id";
+
     /*history*/
     public static final int PENDING = 0;
     public static final int ACCEPTED = 1;
@@ -43,6 +62,7 @@ public final class Boo {
     /*Common Replay*/
     public static final String REPLAY_ERROR = "error";
     public static final String REPLAY_CONFIRM_STATUS = "confirm_status";
+    public static final String REPLAY_SERVER_RESPONSE = "server_responses";
 
     /*request replay*/
     public static final String REPLAY_CAR_TYPE_ID = "Car_Type_ID";
@@ -53,6 +73,7 @@ public final class Boo {
     public static final String REPLAY_COST = "cost";
     public static final String REPLAY_USING_TYPE_ID = "Using_Type_ID";
     public static final String REPLAY_USING_TYPE_NAME = "Using_Type_Name";
+    public static final String REPLAY_NID = KEY_USER_NID;
 
     /*history replay*/
     public static final String REPLAY_REQUEST_ID = "Request_ID";
@@ -75,6 +96,17 @@ public final class Boo {
     public static final String REPLAY_USER_PIN = "User_Pin";
     public static final String REPLAY_STATE = KEY_STATE;
     public static final String REPLAY_MOBILE_NUMBER = KEY_MOBILE_NUMBER;
+    public static final String REPLAY_LOGIN_USER_ID = "UserID";
+
+    /*Request Car*/
+    public static final String KEY_USER_ID = REPLAY_LOGIN_USER_ID;
+    public static final String KEY_CAR_TYPE_ID = REPLAY_CAR_TYPE_ID;
+    public static final String KEY_USING_TYPE_ID = REPLAY_USING_TYPE_ID;
+    public static final String KEY_FROM = REPLAY_FROM_AREA;
+    public static final String KEY_TO = REPLAY_TO_AREA;
+    public static final String KEY_DURATION_ID = REPLAY_DURATION_ID;
+    public static final String KEY_PICKUP_DATE = REPLAY_PICKUP_DATE;
+    public static final String KEY_PICKUP_TIME = REPLAY_PICKUP_TIME;
 
     /*user state*/
     public static final int VALID_USER = 0;

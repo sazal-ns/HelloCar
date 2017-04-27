@@ -8,7 +8,7 @@
     <string name="choose">নির্বাচন করুন</string>
     <string name="call_hotline">হটলাইনে কল করতে চান ?</string>
     <string name="user_name">ব্যবহারকারীর নাম</string>
-    <string name="password">পাসওয়ার্ড</string>
+    <string name="password">পাসওয়ার্ড মিলেনি</string>
     <string name="login">লগ ইন</string>
     <string name="forget_pass">পাসওয়ার্ড ভুলে গেছেন ?</string>
     <string name="no_account">অ্যাকাউন্ট নেই?</string>
@@ -48,4 +48,14 @@
     <string name="date">ভ্রমণের তারিখ</string>
     <string name="time">ভ্রমণের সময়</string>
     <string name="sent_request">অনুরোধ পাঠান</string>
+    <string name="user_and_pass_not_match">ব্যাবহারকারীর নাম অথবা গোপন নাম্বারটি ভুল</string>
+    <string name="server_error">সার্ভারে পৌঁছাতে পারেনি</string>
+    <string name="setPin">পিন প্রদান করুন</string>
+    <string name="pinHint">পিন জন্য এসএমএস চেক করুন</string>
+    <string name="invalid_pin">ভুল পিন</string>
+    <string name="block_user_info">আমাদের গোপনীয়তা এবং শর্তাবলী লঙ্ঘনের কারণে অ্যাডমিন আপনার অ্যাকাউন্ট অবরোধ করেছে। যদি আপনি মনে করেন যে ইহা ভুল করে ঘটেছে তাহলে অনুগ্রহ করে কাস্টমার কেয়ার এর হটলাইন নম্বরটিতে কল করুন।</string>
+    <string name="forget_password_info">আপনার পাসওয়ার্ড পুনরায় সেট করার জন্য হটলাইন নম্বর এ কল করুণ বা এই url এ যান http://hellocar.ga/authentication/forgotPasswordView</string>
+    <string name="update_failed">হালনাগাদ ব্যর্থ হয়েছে</string>
+    <string name="provide_old_password">পুরানো পাসওয়ার্ড প্রদান করুণ</string>
+    <string name="password_not_match">পাসওয়ার্ড</string>
 </resources>

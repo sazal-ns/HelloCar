@@ -59,5 +59,15 @@
     <string name="date">Journey Date</string>
     <string name="time">Journey Time</string>
     <string name="sent_request">Sent Request</string>
+    <string name="user_and_pass_not_match">username or password is incorrect</string>
+    <string name="server_error">can\'t reach server. try again</string>
+    <string name="setPin">Provide Pin</string>
+    <string name="pinHint">Check sms for pin</string>
+    <string name="invalid_pin">invalid pin</string>
+    <string name="block_user_info">Due to violating our privacy &amp; terms of condition admin blocked your account. If you think this happened by mistake please call customer care hotline number.</string>
+    <string name="forget_password_info">To reset your password call hotline number or visit this url  http://hellocar.ga/authentication/forgotPasswordView</string>
+    <string name="update_failed">Update Failed</string>
+    <string name="provide_old_password">Provide old password</string>
+    <string name="password_not_match">Password not match</string>
 
 </resources>

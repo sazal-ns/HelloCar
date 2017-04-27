@@ -1,27 +1,35 @@
 package com.rtsoftbd.siddiqui.hellocar;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ToggleButton;
 
-import java.util.Locale;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.rtsoftbd.siddiqui.hellocar.helpingHand.ApplicationController;
+import com.rtsoftbd.siddiqui.hellocar.helpingHand.Boo;
+import com.rtsoftbd.siddiqui.hellocar.helpingHand.Messages;
+import com.rtsoftbd.siddiqui.hellocar.models.User;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
-
-import static android.content.Context.MODE_PRIVATE;
 
 
 public class SettingsFragment extends Fragment {
@@ -36,6 +44,8 @@ public class SettingsFragment extends Fragment {
     @BindView(R.id.updateAppCompatButton) AppCompatButton ms_UpdateAppCompatButton;
     @BindView(R.id.logoutAppCompatButton) AppCompatButton ms_LogoutAppCompatButton;
     Unbinder unbinder;
+
+    private String email, password;
 
 
     private String language;
@@ -74,6 +84,8 @@ public class SettingsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+        ms_EmailEditText.setText(User.getEmail());
+        ms_UsernameEditText.setText(User.getUserName());
 
         return view;
     }
@@ -100,6 +112,68 @@ public class SettingsFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @OnClick({R.id.updateAppCompatButton, R.id.logoutAppCompatButton})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.updateAppCompatButton:
+                getData();
+                break;
+            case R.id.logoutAppCompatButton:
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+                break;
+        }
+    }
+
+    private void getData() {
+        email = ms_EmailEditText.getText().toString().trim();
+        password = ms_PasswordEditText.getText().toString().trim();
+
+        update();
+    }
+
+    private void update() {
+        if (!password.isEmpty()){
+            if (!password.contentEquals(User.getPassword())){
+                new MaterialDialog.Builder(getContext())
+                        .title(getResources().getString(R.string.provide_old_password))
+                        .input(null, null, false, new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                if (User.getPassword().contentEquals(input)) {
+                                    StringRequest request = new StringRequest(Request.Method.POST, Boo.MS_UPDATE_SAFETY, new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+                                            if (response.contains("true"))
+                                                new Messages(getActivity(), getResources().getString(R.string.success),
+                                                        getResources().getString(R.string.update), true);
+                                            else new Messages(getActivity(), getResources().getString(R.string.error),
+                                                    getResources().getString(R.string.server_error), true);
+                                        }
+                                    }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+
+                                        }
+                                    }) {
+                                        @Override
+                                        protected Map<String, String> getParams() throws AuthFailureError {
+                                            Map<String , String > params = new HashMap<String, String>();
+                                            params.put(Boo.KEY_ID, String.valueOf(User.getUserID()));
+                                            params.put(Boo.KEY_EMAIL, email);
+                                            params.put(Boo.KEY_LOGIN_PASSWORD, password);
+
+                                            return params;
+                                        }
+                                    };
+                                    ApplicationController.getInstance().addToRequestQueue(request);
+                                }else new Messages(getActivity(),null, getResources().getString(R.string.password_not_match), true);
+                            }
+                        })
+                        .show();
+            }
+        }
     }
 
     interface OnFragmentInteractionListener {

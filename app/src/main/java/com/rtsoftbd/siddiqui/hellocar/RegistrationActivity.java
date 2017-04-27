@@ -304,7 +304,7 @@ public class RegistrationActivity extends AppCompatActivity {
             String responseString = null;
 
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(Boo.REG);
+            HttpPost httppost = new HttpPost(Boo.MS_REG);
 
             try {
                 AndroidMultiPartEntity entity = new AndroidMultiPartEntity(

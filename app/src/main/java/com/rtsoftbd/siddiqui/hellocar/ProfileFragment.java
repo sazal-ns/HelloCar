@@ -3,16 +3,21 @@ package com.rtsoftbd.siddiqui.hellocar;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +27,14 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.rtsoftbd.siddiqui.hellocar.helpingHand.AndroidMultiPartEntity;
+import com.rtsoftbd.siddiqui.hellocar.helpingHand.ApplicationController;
 import com.rtsoftbd.siddiqui.hellocar.helpingHand.Boo;
 import com.rtsoftbd.siddiqui.hellocar.helpingHand.Messages;
+import com.rtsoftbd.siddiqui.hellocar.models.User;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -32,12 +42,15 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,37 +75,23 @@ public class ProfileFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    @BindView(R.id.thumbnailImageView)
-    ImageView ms_ThumbnailImageView;
-    @BindView(R.id.uploadImageButton)
-    ImageButton ms_UploadImageButton;
-    @BindView(R.id.nameEditText)
-    EditText ms_NameEditText;
-    @BindView(R.id.numberEditText)
-    EditText ms_NumberEditText;
-    @BindView(R.id.nidEditText)
-    EditText ms_NidEditText;
-    @BindView(R.id.addressEditText)
-    EditText ms_AddressEditText;
-    @BindView(R.id.emgContactEditText)
-    EditText ms_EmgContactEditText;
-    @BindView(R.id.emailEditText)
-    EditText ms_EmailEditText;
-    @BindView(R.id.usernameEditText)
-    EditText ms_UsernameEditText;
-    @BindView(R.id.passwordEditText)
-    EditText ms_PasswordEditText;
-    @BindView(R.id.repeatPasswordEditText)
-    EditText ms_RepeatPasswordEditText;
-    @BindView(R.id.registrationAppCompatButton)
-    AppCompatButton ms_RegistrationAppCompatButton;
-    @BindView(R.id.scrollView)
-    ScrollView ms_ScrollView;
+    @BindView(R.id.thumbnailImageView) ImageView ms_ThumbnailImageView;
+    @BindView(R.id.uploadImageButton) ImageButton ms_UploadImageButton;
+    @BindView(R.id.nameEditText) EditText ms_NameEditText;
+    @BindView(R.id.numberEditText) EditText ms_NumberEditText;
+    @BindView(R.id.nidEditText) EditText ms_NidEditText;
+    @BindView(R.id.addressEditText) EditText ms_AddressEditText;
+    @BindView(R.id.emgContactEditText) EditText ms_EmgContactEditText;
+    @BindView(R.id.emailEditText) EditText ms_EmailEditText;
+    @BindView(R.id.usernameEditText) EditText ms_UsernameEditText;
+    @BindView(R.id.passwordEditText) EditText ms_PasswordEditText;
+    @BindView(R.id.repeatPasswordEditText) EditText ms_RepeatPasswordEditText;
+    @BindView(R.id.registrationAppCompatButton) AppCompatButton ms_RegistrationAppCompatButton;
+    @BindView(R.id.scrollView) ScrollView ms_ScrollView;
+    @BindView(R.id.logoImageView) ImageView ms_LogoImageView;
     Unbinder unbinder;
-    @BindView(R.id.logoImageView)
-    ImageView ms_LogoImageView;
 
-    private String imagePath;
+    private String imagePath, name, address, email, nid, emg_number, path;
     private long totalSize = 0;
     private ProgressDialog progressDialog;
 
@@ -150,14 +149,69 @@ public class ProfileFragment extends Fragment {
         ms_NumberEditText.setFocusable(false);
         ms_LogoImageView.setVisibility(View.GONE);
 
+        progressDialog = new ProgressDialog(getContext());
+
+
+
         setData();
 
         return view;
     }
 
     private void setData() {
+        ms_NameEditText.setText(User.getFullName());
+        ms_NumberEditText.setText("0"+String.valueOf(User.getMobile()));
+        ms_NidEditText.setText(String.valueOf(User.getnID()));
+        ms_AddressEditText.setText(User.getAddress());
+        ms_EmgContactEditText.setText("0"+String.valueOf(User.getEngContact()));
+
+        imagePath = "";
+
+        ImageRequest request = new ImageRequest(Boo.PICTURE_URL + User.getImageName(), new Response.Listener<Bitmap>() {
+            @Override
+            public void onResponse(Bitmap response) {
+                ms_ThumbnailImageView.setImageBitmap(response);
+
+                BitmapDrawable bitmapDrawable = ((BitmapDrawable) ms_ThumbnailImageView.getDrawable());
+                Bitmap bitmap = bitmapDrawable .getBitmap();
+                saveImage(bitmap, User.getImageName());
+            }
+        }, 0, 0, null, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        ApplicationController.getInstance().addToRequestQueue(request);
 
     }
+
+    private void saveImage(Bitmap finalBitmap, String imageName) {
+        File sdCard = Environment.getExternalStorageDirectory();
+        File myDir = new File(sdCard.getAbsolutePath() +"/"+ getContext().getPackageName());
+        path = myDir.getPath();
+        myDir.mkdirs();
+
+        File file = new File(myDir, imageName);
+        if (file.exists()) {
+            Log.i("file exists", "" + imageName);
+            file.delete();
+        } else {
+            Log.i("file does not exists", "" + imageName);
+        }
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            finalBitmap.compress(Bitmap.CompressFormat.PNG,100,out);
+            out.flush();
+            out.close();
+            imagePath = path.concat("/"+imageName);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -194,8 +248,55 @@ public class ProfileFragment extends Fragment {
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
                 break;
             case R.id.registrationAppCompatButton:
+                getData();
                 break;
         }
+    }
+
+    private void getData() {
+        name = ms_NameEditText.getText().toString().trim();
+        address = ms_AddressEditText.getText().toString().trim();
+        email = ms_EmailEditText.getText().toString().trim();
+        nid = ms_NidEditText.getText().toString().trim();
+        emg_number = ms_EmgContactEditText.getText().toString().trim();
+
+
+        if (valid()){
+            progressDialog.setMax(100);
+            progressDialog.setProgress(0);
+            new UploadFileToServer().execute();
+            progressDialog.show();}
+    }
+
+    private boolean valid() {
+        boolean valid = true;
+
+        if (name.isEmpty() || name.length() <3){
+            ms_NameEditText.setError(getResources().getString(R.string.required));
+            valid = false;
+        }else ms_NameEditText.setError(null);
+
+        if (!emg_number.matches("^01[15-9]\\d{8}$")){
+            ms_EmgContactEditText.setError(getResources().getString(R.string.invalid_number));
+            valid = false;
+        }else ms_EmgContactEditText.setError(null);
+
+        if (!nid.matches("^\\d{17}$")){
+            ms_NidEditText.setError(getResources().getString(R.string.invalid_number));
+            valid = false;
+        }else ms_NidEditText.setError(null);
+
+        if (address.isEmpty()){
+            ms_AddressEditText.setError(getResources().getString(R.string.required));
+            valid = false;
+        }else ms_AddressEditText.setError(null);
+
+        if (emg_number.contentEquals(String.valueOf(User.getMobile()))){
+            ms_EmgContactEditText.setError(getResources().getString(R.string.emg_person_contact));
+            valid = false;
+        }else ms_EmgContactEditText.setError(null);
+
+        return valid;
     }
 
     @Override
@@ -248,25 +349,11 @@ public class ProfileFragment extends Fragment {
     private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
         @Override
         protected void onPreExecute() {
-            // setting progress bar to zero
-            //progressBar.setProgress(0);
-            progressDialog = new ProgressDialog(getContext());
-            progressDialog.setMax(100);
-            progressDialog.setProgress(0);
-            progressDialog.show();
             super.onPreExecute();
         }
 
         @Override
         protected void onProgressUpdate(Integer... progress) {
-            // Making progress bar visible
-            // progressBar.setVisibility(View.VISIBLE);
-
-            // updating progress bar value
-            // progressBar.setProgress(progress[0]);
-
-            // updating percentage value
-            // txtPercentage.setText(String.valueOf(progress[0]) + "%");
             progressDialog.setMessage("Uploading & Sing Up . . . " + progress[0]);
         }
 
@@ -280,7 +367,7 @@ public class ProfileFragment extends Fragment {
             String responseString = null;
 
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(Boo.REG);
+            HttpPost httppost = new HttpPost(Boo.MS_UPDATE_PROFILE);
 
             try {
                 AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
@@ -295,18 +382,13 @@ public class ProfileFragment extends Fragment {
                 File sourceFile = new File(imagePath);
                 // Adding file data to http body
                 entity.addPart(Boo.KEY_USER_FILE, new FileBody(sourceFile));
-
                 // Extra parameters if you want to pass to server
                 // entity.addPart("userfile", new StringBody(sourceFile.getName()));
-               /* entity.addPart(Boo.KEY_USER_ADDRESS, new StringBody(address));
+                entity.addPart(Boo.KEY_USER_ADDRESS, new StringBody(address));
                 entity.addPart(Boo.KEY_USER_EMERGENCY_NUMBER, new StringBody(String.valueOf(emg_number)));
-                entity.addPart(Boo.KEY_USER_EMAIL, new StringBody(email));
                 entity.addPart(Boo.KEY_USER_NID, new StringBody(String.valueOf(nid)));
-                entity.addPart(Boo.KEY_MOBILE_NUMBER, new StringBody(String.valueOf(number)));
                 entity.addPart(Boo.KEY_FULL_NAME, new StringBody(name));
-                entity.addPart(Boo.KEY_USER_PASSWORD, new StringBody(password));
-                entity.addPart(Boo.KEY_USER_NAME, new StringBody(userName));*/
-
+                entity.addPart(Boo.KEY_ID, new StringBody(String.valueOf(User.getUserID())));
 
                 totalSize = entity.getContentLength();
                 httppost.setEntity(entity);
@@ -336,13 +418,14 @@ public class ProfileFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
+            Log.i("RESULT", result);
 
-            if (result.contains("Data Successfully Sent")) {
+            if (result.contains("true")) {
                 new Messages(getActivity(), getResources().getString(R.string.success), getResources().getString(R.string.profile_updated), true);
 
             } else new MaterialDialog.Builder(getContext())
                     .title(getResources().getString(R.string.error))
-                    .content(getResources().getString(R.string.registration_failed))
+                    .content(getResources().getString(R.string.update_failed))
                     .icon(getResources().getDrawable(R.drawable.ic_error_red_a700_36dp))
                     .show();
 

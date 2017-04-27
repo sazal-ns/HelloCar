@@ -1,6 +1,7 @@
 package com.rtsoftbd.siddiqui.hellocar.helpingHand;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.rtsoftbd.siddiqui.hellocar.R;
@@ -13,6 +14,7 @@ public class Messages {
     private Activity activity;
     private String title, message;
     private boolean cancel;
+    private Drawable icon;
 
     public Messages(Activity activity) {
         this.activity = activity;
@@ -26,11 +28,27 @@ public class Messages {
         showMessage();
     }
 
+    public Messages(Activity activity, String title, String message, boolean cancel, Drawable icon) {
+        this.activity = activity;
+        this.title = title;
+        this.message = message;
+        this.cancel = cancel;
+        this.icon = icon;
+    }
+
+    public Messages(Activity activity, String title, String message, Drawable icon) {
+        this.activity = activity;
+        this.title = title;
+        this.message = message;
+        this.icon = icon;
+    }
+
     private void showMessage(){
         new MaterialDialog.Builder(activity)
                 .cancelable(cancel)
                 .title(title)
                 .content(message)
+                .icon(icon)
                 .show();
     }
 

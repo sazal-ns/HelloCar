@@ -84,9 +84,9 @@ public class SplashActivity extends AppCompatActivity {
                         editor.apply();
 
                         ms_ProgressBar.setVisibility(View.VISIBLE);
-                        /*loadDate();*/
-                        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                        finish();
+                        loadDate();
+                        /*startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                        finish();*/
 
                         return true;
                     }
@@ -99,7 +99,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void loadDate() {
-        final StringRequest requestCarType = new StringRequest(Request.Method.POST, Boo.BAG, new Response.Listener<String>() {
+        final StringRequest requestCarType = new StringRequest(Request.Method.POST, Boo.MS_BAG, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -131,7 +131,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         };
 
-        final StringRequest requestDurationAndCost = new StringRequest(Request.Method.POST, Boo.BAG, new Response.Listener<String>() {
+        final StringRequest requestDurationAndCost = new StringRequest(Request.Method.POST, Boo.MS_BAG, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -164,7 +164,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         };
 
-        final StringRequest requestUsingType = new StringRequest(Request.Method.POST, Boo.BAG, new Response.Listener<String>() {
+        final StringRequest requestUsingType = new StringRequest(Request.Method.POST, Boo.MS_BAG, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -220,7 +220,7 @@ public class SplashActivity extends AppCompatActivity {
         addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortCut);
         addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getResources().getString(R.string.app_name));
         addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
-                Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.mipmap.ic_launcher_icon));
+                Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.mipmap.ic_launcher));
         addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
         addIntent.putExtra("duplicate", false);
         getApplicationContext().sendBroadcast(addIntent);
