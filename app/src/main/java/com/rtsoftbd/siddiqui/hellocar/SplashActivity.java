@@ -187,7 +187,6 @@ public class SplashActivity extends AppCompatActivity {
                 if (error.getMessage().contains("Unable to resolve host"))
                     new Messages(SplashActivity.this).NoInternet();
                 error.printStackTrace();
-                error.printStackTrace();
             }
         }) {
             @Override
