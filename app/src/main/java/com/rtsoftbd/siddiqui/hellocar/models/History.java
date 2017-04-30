@@ -1,7 +1,8 @@
 package com.rtsoftbd.siddiqui.hellocar.models;
 
+
 import java.sql.Time;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * Created by RTsoftBD_Siddiqui on 2017-04-24.
@@ -10,13 +11,13 @@ import java.sql.Date;
 public class History {
     private int request_ID, user_ID, car_Type_ID, using_Type_ID, duration_ID, request_State, staff_ID;
     private String from_Area, to_Area;
-    private Date pickup_Date;
-    private Time pickup_Time;
+    private String pickup_Date;
+    private String pickup_Time;
 
     public History() {
     }
 
-    public History(int request_ID, int user_ID, int car_Type_ID, int using_Type_ID, int duration_ID, int request_State, int staff_ID, String from_Area, String to_Area, Date pickup_Date, Time pickup_Time) {
+    public History(int request_ID, int user_ID, int car_Type_ID, int using_Type_ID, int duration_ID, int request_State, int staff_ID, String from_Area, String to_Area, String pickup_Date, String pickup_Time) {
         this.request_ID = request_ID;
         this.user_ID = user_ID;
         this.car_Type_ID = car_Type_ID;
@@ -102,19 +103,19 @@ public class History {
         this.to_Area = to_Area;
     }
 
-    public Date getPickup_Date() {
+    public String getPickup_Date() {
         return pickup_Date;
     }
 
-    public void setPickup_Date(Date pickup_Date) {
+    public void setPickup_Date(String pickup_Date) {
         this.pickup_Date = pickup_Date;
     }
 
-    public Time getPickup_Time() {
+    public String getPickup_Time() {
         return pickup_Time;
     }
 
-    public void setPickup_Time(Time pickup_Time) {
+    public void setPickup_Time(String  pickup_Time) {
         this.pickup_Time = pickup_Time;
     }
 }
