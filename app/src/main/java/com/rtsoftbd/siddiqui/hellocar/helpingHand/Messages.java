@@ -56,7 +56,6 @@ public class Messages {
         new MaterialDialog.Builder(activity)
                 .title(activity.getResources().getString(R.string.error))
                 .titleColor(activity.getResources().getColor(R.color.red))
-                .icon(activity.getResources().getDrawable(R.drawable.ic_error_red_a700_36dp))
                 .content(activity.getResources().getString(R.string.no_active_internet))
                 .cancelable(true)
                 .show();

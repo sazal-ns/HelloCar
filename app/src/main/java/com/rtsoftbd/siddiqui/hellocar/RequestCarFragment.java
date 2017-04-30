@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
@@ -80,9 +81,7 @@ public class RequestCarFragment extends Fragment {
 
     private String from, to, carTypeId, whereToID, durationID;
 
-    private CarType carType = new CarType();
     private List<String> carTypes = new ArrayList<>();
-    private DurationAndCost durationAndCost = new DurationAndCost();
     private List<String> durationAndCosts = new ArrayList<>();
     private UsingType usingType = new UsingType();
     private List<String> usingTypes = new ArrayList<>();
@@ -176,20 +175,24 @@ public class RequestCarFragment extends Fragment {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
                 ms_DurationMaterialSpinner.clearComposingText();
-                ms_DurationMaterialSpinner.clearFocus();
+                ms_DurationMaterialSpinner.setSelectedIndex(0);
+                ms_DurationMaterialSpinner.animate();
                 durationAndCosts.clear();
                 int k = 0;
-                int i;
+                int i = 0;
+                boolean b = false;
+                whereToID = String.valueOf(UsingType.getUsingTypes().get(position).getUsing_Type_ID());
                 Log.i("post", ""+position);
                 for (i = 0; i<DurationAndCost.getDurationAndCosts().size(); i++) {
                     if (DurationAndCost.getDurationAndCosts().get(i).getDuration_Type_ID() ==
                             UsingType.getUsingTypes().get(position).getUsing_Type_ID()) {
                         k++;
+                        b = true;
                         durationAndCosts.add(DurationAndCost.getDurationAndCosts().get(i).getDuration_Name() +
                                 " " + DurationAndCost.getDurationAndCosts().get(i).getCost() + " TK");
-                    }
+                    }else if (b) break;
+                    Log.d("whertoUseinfor", whereToID + "->" + k+"->"+i);
                 }
-                whereToID = String.valueOf(UsingType.getUsingTypes().get(position).getUsing_Type_ID());
                 durationID = String.valueOf(DurationAndCost.getDurationAndCosts().get(i-k).getDuration_ID());
                 ms_DurationMaterialSpinner.setItems(durationAndCosts);
                 Log.d("whertoUse", whereToID + "->" + k+"->"+i);

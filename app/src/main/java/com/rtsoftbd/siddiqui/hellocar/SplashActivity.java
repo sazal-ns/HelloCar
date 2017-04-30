@@ -130,6 +130,7 @@ public class SplashActivity extends AppCompatActivity {
                 return params;
             }
         };
+        ApplicationController.getInstance().addToRequestQueue(requestCarType, TAG);
 
         final StringRequest requestDurationAndCost = new StringRequest(Request.Method.POST, Boo.MS_BAG, new Response.Listener<String>() {
             @Override
@@ -164,6 +165,8 @@ public class SplashActivity extends AppCompatActivity {
             }
         };
 
+        ApplicationController.getInstance().addToRequestQueue(requestDurationAndCost, TAG);
+
         final StringRequest requestUsingType = new StringRequest(Request.Method.POST, Boo.MS_BAG, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -197,9 +200,6 @@ public class SplashActivity extends AppCompatActivity {
                 return params;
             }
         };
-
-        ApplicationController.getInstance().addToRequestQueue(requestCarType, TAG);
-        ApplicationController.getInstance().addToRequestQueue(requestDurationAndCost, TAG);
         ApplicationController.getInstance().addToRequestQueue(requestUsingType, TAG);
     }
 

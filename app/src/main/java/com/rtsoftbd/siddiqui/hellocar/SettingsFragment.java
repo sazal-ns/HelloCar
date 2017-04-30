@@ -145,9 +145,10 @@ public class SettingsFragment extends Fragment {
                                     StringRequest request = new StringRequest(Request.Method.POST, Boo.MS_UPDATE_SAFETY, new Response.Listener<String>() {
                                         @Override
                                         public void onResponse(String response) {
-                                            if (response.contains("true"))
+                                            if (response.contains("true")){
                                                 new Messages(getActivity(), getResources().getString(R.string.success),
                                                         getResources().getString(R.string.update), true);
+                                            }
                                             else new Messages(getActivity(), getResources().getString(R.string.error),
                                                     getResources().getString(R.string.server_error), true);
                                         }

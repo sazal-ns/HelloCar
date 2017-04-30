@@ -60,6 +60,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
+        ApplicationController.getInstance().cancelPendingRequests("SplashActivity");
     }
 
     @OnClick({R.id.loginAppCompatButton, R.id.forgetTextView, R.id.regTextView, R.id.hotlineTitleTextView})
@@ -105,6 +107,7 @@ public class LoginActivity extends AppCompatActivity {
         final boolean[] authorized = {true};
 
         if (!isValid()){
+            ApplicationController.getInstance().cancelPendingRequests("GET");
             return false;
         }
 

@@ -264,8 +264,9 @@ public class ProfileFragment extends Fragment {
         if (valid()){
             progressDialog.setMax(100);
             progressDialog.setProgress(0);
+            progressDialog.setCancelable(false);
             new UploadFileToServer().execute();
-            progressDialog.show();}
+            }
     }
 
     private boolean valid() {
@@ -349,12 +350,13 @@ public class ProfileFragment extends Fragment {
     private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
         @Override
         protected void onPreExecute() {
+            progressDialog.show();
             super.onPreExecute();
         }
 
         @Override
         protected void onProgressUpdate(Integer... progress) {
-            progressDialog.setMessage("Uploading & Sing Up . . . " + progress[0]);
+            progressDialog.setMessage("Uploading & Updating . . . " + progress[0]+"%");
         }
 
         @Override
@@ -419,7 +421,7 @@ public class ProfileFragment extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             Log.i("RESULT", result);
-
+            progressDialog.dismiss();
             if (result.contains("true")) {
                 new Messages(getActivity(), getResources().getString(R.string.success), getResources().getString(R.string.profile_updated), true);
 
@@ -428,8 +430,6 @@ public class ProfileFragment extends Fragment {
                     .content(getResources().getString(R.string.update_failed))
                     .icon(getResources().getDrawable(R.drawable.ic_error_red_a700_36dp))
                     .show();
-
-            progressDialog.dismiss();
             super.onPostExecute(result);
         }
 
