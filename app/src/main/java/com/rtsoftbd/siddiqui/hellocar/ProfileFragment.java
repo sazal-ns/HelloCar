@@ -161,7 +161,7 @@ public class ProfileFragment extends Fragment {
     private void setData() {
         ms_NameEditText.setText(User.getFullName());
         ms_NumberEditText.setText("0"+String.valueOf(User.getMobile()));
-        ms_NidEditText.setText(String.valueOf(User.getnID()));
+        ms_NidEditText.setText(User.getnID());
         ms_AddressEditText.setText(User.getAddress());
         ms_EmgContactEditText.setText("0"+String.valueOf(User.getEngContact()));
 

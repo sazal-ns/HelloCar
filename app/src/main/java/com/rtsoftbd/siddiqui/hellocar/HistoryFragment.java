@@ -1,20 +1,19 @@
 package com.rtsoftbd.siddiqui.hellocar;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -26,6 +25,8 @@ import com.rtsoftbd.siddiqui.hellocar.customAdapter.HistoryAdapter;
 import com.rtsoftbd.siddiqui.hellocar.helpingHand.ApplicationController;
 import com.rtsoftbd.siddiqui.hellocar.helpingHand.Boo;
 import com.rtsoftbd.siddiqui.hellocar.helpingHand.Messages;
+import com.rtsoftbd.siddiqui.hellocar.models.CarType;
+import com.rtsoftbd.siddiqui.hellocar.models.DurationAndCost;
 import com.rtsoftbd.siddiqui.hellocar.models.History;
 import com.rtsoftbd.siddiqui.hellocar.models.User;
 import com.rtsoftbd.siddiqui.hellocar.models.UsingType;
@@ -33,13 +34,7 @@ import com.rtsoftbd.siddiqui.hellocar.models.UsingType;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,6 +69,16 @@ public class HistoryFragment extends Fragment {
     private List<History> histories = new ArrayList<>();
 
     private History history;
+
+    TextView carType;
+    TextView usingType;
+    TextView duration ;
+    TextView dateTime;
+    TextView from;
+    TextView to;
+    TextView cost;
+    AppCompatButton button;
+    View viewl;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -147,25 +152,125 @@ public class HistoryFragment extends Fragment {
         ms_List.setAdapter(historyAdapter);
 
         layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        viewl = layoutInflater.inflate(R.layout.details, null);
+        button = (AppCompatButton) viewl.findViewById(R.id.cancelAppCompatButton);
+        carType = (TextView) viewl.findViewById(R.id.carTypeNameTextView);
+        usingType = (TextView) viewl.findViewById(R.id.usingTypeNameTextView);
+        duration = (TextView) viewl.findViewById(R.id.durationNameAppCompatTextView);
+        dateTime = (TextView) viewl.findViewById(R.id.dateTimeNameTextView);
+        from = (TextView) viewl.findViewById(R.id.fromNameTextView);
+        to = (TextView) viewl.findViewById(R.id.toNameTextView);
+        cost = (TextView) viewl.findViewById(R.id.costNameTextView);
+
         ms_List.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 history = (History) parent.getItemAtPosition(position);
-                View viewl = layoutInflater.inflate(R.layout.details, null);
-                AppCompatButton button = (AppCompatButton) viewl.findViewById(R.id.cancelAppCompatButton);
-                TextView textView = (TextView) viewl.findViewById(R.id.carTypeNameTextView);
-                textView.setText(history.getPickup_Time());
+
+                from.setText(history.getFrom_Area());
+                to.setText(history.getTo_Area());
+                dateTime.setText(history.getPickup_Date() + " " + history.getPickup_Time());
+
+                for (int i =0; i< DurationAndCost.getDurationAndCosts().size(); i++){
+                    if (DurationAndCost.getDurationAndCosts().get(i).getDuration_ID() == history.getDuration_ID()){
+                        duration.setText(DurationAndCost.getDurationAndCosts().get(i).getDuration_Name());
+                        cost.setText(String.valueOf(DurationAndCost.getDurationAndCosts().get(i).getCost()) +
+                        getResources().getString(R.string.tk));
+                        break;
+                    }
+                }
+
+                for (int i =0; i< CarType.getCarTypes().size(); i++){
+                    if (CarType.getCarTypes().get(i).getCar_Type_ID()== history.getCar_Type_ID()){
+                        carType.setText(CarType.getCarTypes().get(i).getCar_Type_Name());
+                        break;
+                    }
+                }
+
+                for (int i = 0; i< UsingType.getUsingTypes().size(); i++){
+                    if (UsingType.getUsingTypes().get(i).getUsing_Type_ID() == history.getUsing_Type_ID()){
+                        usingType.setText(UsingType.getUsingTypes().get(i).getUsing_Type_Name());
+                        break;
+                    }
+                }
+                final MaterialDialog d =  new MaterialDialog.Builder(getContext())
+                        .customView(viewl, true)
+                        .autoDismiss(true)
+                        .show();
 
                 if (history.getRequest_State() != 0) button.setVisibility(View.GONE);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.i("Clicked View", "Yahoooo");
+
+                        StringRequest request = new StringRequest(Request.Method.POST, Boo.MS_IS_CANCEL_REQUEST, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                if (response.contains("true")){
+                                    ApplicationController.getInstance().cancelPendingRequests("c");
+
+
+                                    new MaterialDialog.Builder(getContext())
+                                            .content(getResources().getString(R.string.are_you))
+                                            .positiveText(getResources().getString(R.string.sure))
+                                            .positiveColor(getResources().getColor(R.color.green))
+                                            .negativeText(getResources().getString(R.string.no))
+                                            .negativeColor(getResources().getColor(R.color.red))
+                                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                                @Override
+                                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                    StringRequest request1 = new StringRequest(Request.Method.POST, Boo.MS_CANCEL_REQUEST,
+                                                            new Response.Listener<String>() {
+                                                                @Override
+                                                                public void onResponse(String response) {
+                                                                    ms_HistoryMaterialSpinner.setSelectedIndex(Boo.REJECT_BY_CLIENT);
+                                                                    loadHistory(Boo.REJECT_BY_CLIENT);
+                                                                    d.dismiss();
+                                                                }
+                                                            }, new Response.ErrorListener() {
+                                                        @Override
+                                                        public void onErrorResponse(VolleyError error) {
+                                                            error.printStackTrace();
+                                                        }
+                                                    }){
+                                                        @Override
+                                                        protected Map<String, String> getParams() throws AuthFailureError {
+                                                            Map<String , String > params = new HashMap<String, String>();
+                                                            params.put(Boo.KEY_ID, String.valueOf(history.getRequest_ID()));
+                                                            return params;
+                                                        }
+                                                    };
+
+                                                    ApplicationController.getInstance().addToRequestQueue(request1);
+
+                                                }
+                                            })
+                                            .autoDismiss(true)
+                                            .show();
+                                    } else{
+                                    ms_HistoryMaterialSpinner.setSelectedIndex(Boo.REJECT_BY_ADMIN);
+                                    loadHistory(Boo.REJECT_BY_ADMIN);
+                                    d.dismiss();
+                                    }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                error.printStackTrace();
+                            }
+                        }){
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String , String > params = new HashMap<String, String>();
+                                params.put(Boo.KEY_ID, String .valueOf(history.getRequest_ID()));
+                                return params;
+                            }
+                        };
+
+                        ApplicationController.getInstance().addToRequestQueue(request,"c");
+
                     }
                 });
-                new MaterialDialog.Builder(getContext())
-                        .customView(viewl, true)
-                        .show();
             }
         });
 
@@ -199,7 +304,7 @@ public class HistoryFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 if (error.getMessage().contains("Unable to resolve host"))
-                    new Messages(getActivity()).NoInternet();
+                    new Messages(getActivity()).noInternet();
                 error.printStackTrace();
             }
         }){

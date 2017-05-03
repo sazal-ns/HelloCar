@@ -7,15 +7,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageButton;
-import android.support.v7.widget.ForwardingListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
@@ -36,7 +33,6 @@ import com.rtsoftbd.siddiqui.hellocar.models.UsingType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -320,10 +316,13 @@ public class RequestCarFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.carCatInfoAppCompatImageButton:
+                new Messages(getActivity()).showNote(getResources().getString(R.string.note_one));
                 break;
             case R.id.whereInfoAppCompatImageButton:
+                new Messages(getActivity()).showNote(getResources().getString(R.string.note_one));
                 break;
             case R.id.durationInfoAppCompatImageButton:
+                new Messages(getActivity()).showNote(getResources().getString(R.string.note_one));
                 break;
             case R.id.submitRequestAppCompatButton:
                 getDate();
@@ -356,7 +355,7 @@ public class RequestCarFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 if (error.getMessage().contains("Unable to resolve host"))
-                    new Messages(getActivity()).NoInternet();
+                    new Messages(getActivity()).noInternet();
                 error.printStackTrace();
             }
         }){

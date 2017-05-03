@@ -15,7 +15,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:text="You Request For"/>
+        android:text="@string/request_for"/>
 
     <TextView
         android:id="@+id/carTypeTextView"
@@ -27,7 +27,7 @@
         android:textAllCaps="true"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/requestFroTextView"
-        android:text="car type"/>
+        android:text="@string/car_type"/>
 
     <TextView
         android:id="@+id/carTypeNameTextView"
@@ -37,8 +37,7 @@
         android:layout_marginTop="@dimen/default_margin_gap"
         android:textAllCaps="true"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/carTypeTextView"
-        android:text="AC CAR"/>
+        app:layout_constraintTop_toBottomOf="@+id/carTypeTextView"/>
 
     <TextView
          android:id="@+id/usingTypeTextView"
@@ -50,17 +49,17 @@
         android:layout_marginTop="@dimen/margin_10"
         app:layout_constraintLeft_toLeftOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/requestFroTextView"
-        android:text="USING"/>
+        android:text="@string/using"/>
 
     <TextView
         android:id="@+id/usingTypeNameTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_15"
         android:layout_marginTop="@dimen/default_margin_gap"
         app:layout_constraintLeft_toLeftOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/usingTypeTextView"
-        android:text="Inside of City"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usingTypeTextView"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/durationAppCompatTextView"
@@ -72,17 +71,17 @@
         android:layout_marginTop="@dimen/margin_10"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/carTypeNameTextView"
-        android:text="Duration"/>
+        android:text="@string/duration"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/durationNameAppCompatTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_15"
         android:layout_marginTop="@dimen/default_margin_gap"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/durationAppCompatTextView"
-        android:text="4 Hour"/>
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/durationAppCompatTextView"/>
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
@@ -101,7 +100,7 @@
         android:layout_marginTop="@dimen/margin_10"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/durationNameAppCompatTextView"
-        android:text="FROM"/>
+        android:text="@string/from"/>
 
     <TextView
         android:id="@+id/fromNameTextView"
@@ -110,8 +109,7 @@
         android:textSize="@dimen/text_15"
         android:layout_marginTop="@dimen/default_margin_gap"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fromTextView"
-        android:text="road 4, mohammadi housing ltd, mohammadpur, dhaka"/>
+        app:layout_constraintTop_toBottomOf="@+id/fromTextView"/>
 
     <TextView
         android:id="@+id/toTextView"
@@ -124,7 +122,7 @@
         android:layout_marginTop="@dimen/margin_10"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fromNameTextView"
-        android:text="TO"/>
+        android:text="@string/to"/>
 
     <TextView
         android:id="@+id/toNameTextView"
@@ -134,8 +132,7 @@
         android:textSize="@dimen/text_15"
         android:layout_marginTop="@dimen/default_margin_gap"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toTextView"
-        android:text="Fantaci Kingdom, asuliya, Dhaka"/>
+        app:layout_constraintTop_toBottomOf="@id/toTextView"/>
 
     <TextView
         android:id="@+id/dateTimeTextView"
@@ -147,7 +144,7 @@
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@id/usingTypeNameTextView"
-        android:text="DATE &amp; Time"/>
+        android:text="@string/date_time"/>
 
     <TextView
         android:id="@+id/dateTimeNameTextView"
@@ -156,8 +153,7 @@
         android:layout_marginTop="@dimen/default_margin_gap"
         android:textSize="@dimen/text_15"
         app:layout_constraintLeft_toLeftOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/dateTimeTextView"
-        android:text="2017-05-01 10:0"/>
+        app:layout_constraintTop_toBottomOf="@id/dateTimeTextView"/>
 
     <TextView
         android:id="@+id/costTextView"
@@ -171,7 +167,7 @@
         android:textAllCaps="true"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toNameTextView"
-        android:text="COST"/>
+        android:text="@string/cost"/>
 
     <TextView
         android:id="@+id/costNameTextView"
@@ -181,8 +177,7 @@
         android:textSize="@dimen/text_15"
         android:layout_marginRight="@dimen/margin_24"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/costTextView"
-        android:text="1508 TK"/>
+        app:layout_constraintTop_toBottomOf="@id/costTextView"/>
 
     <View
         android:id="@+id/view"

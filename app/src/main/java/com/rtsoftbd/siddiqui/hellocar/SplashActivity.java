@@ -118,7 +118,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 if (error.getMessage().contains("Unable to resolve host"))
-                    new Messages(SplashActivity.this).NoInternet();
+                    new Messages(SplashActivity.this).noInternet();
                 error.printStackTrace();
             }
         }) {
@@ -151,7 +151,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 if (error.getMessage().contains("Unable to resolve host"))
-                    new Messages(SplashActivity.this).NoInternet();
+                    new Messages(SplashActivity.this).noInternet();
                 error.printStackTrace();
                 error.printStackTrace();
             }
@@ -188,7 +188,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 if (error.getMessage().contains("Unable to resolve host"))
-                    new Messages(SplashActivity.this).NoInternet();
+                    new Messages(SplashActivity.this).noInternet();
                 error.printStackTrace();
             }
         }) {

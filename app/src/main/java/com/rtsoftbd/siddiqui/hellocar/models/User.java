@@ -5,8 +5,8 @@ package com.rtsoftbd.siddiqui.hellocar.models;
  */
 
 public class User {
-     private static int userID, nID, engContact, pin, state, mobile;
-    private static String fullName, userName, password, email, address, imageName;
+     private static int userID, engContact, pin, state, mobile;
+    private static String fullName, userName, password, email, address, imageName, nID;
 
     public User() {
     }
@@ -19,11 +19,11 @@ public class User {
         User.userID = userID;
     }
 
-    public static int getnID() {
+    public static String  getnID() {
         return nID;
     }
 
-    public static void setnID(int nID) {
+    public static void setnID(String  nID) {
         User.nID = nID;
     }
 

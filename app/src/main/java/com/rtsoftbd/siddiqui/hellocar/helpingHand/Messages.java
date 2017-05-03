@@ -52,7 +52,15 @@ public class Messages {
                 .show();
     }
 
-    public void NoInternet(){
+    public void showNote(String note){
+        new MaterialDialog.Builder(activity)
+                .title(activity.getResources().getString(R.string.note))
+                .content(note)
+                .cancelable(true)
+                .show();
+    }
+
+    public void noInternet(){
         new MaterialDialog.Builder(activity)
                 .title(activity.getResources().getString(R.string.error))
                 .titleColor(activity.getResources().getColor(R.color.red))
