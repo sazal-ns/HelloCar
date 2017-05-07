@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:padding="@dimen/default_padding"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/bg"
     tools:context="com.rtsoftbd.siddiqui.hellocar.LoginActivity">
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"

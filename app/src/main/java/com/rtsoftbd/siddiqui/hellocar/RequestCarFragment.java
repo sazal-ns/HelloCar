@@ -3,6 +3,7 @@ package com.rtsoftbd.siddiqui.hellocar;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -157,12 +158,14 @@ public class RequestCarFragment extends Fragment {
 
         for (int i = 0; i<DurationAndCost.getDurationAndCosts().size(); i++) {
             if (DurationAndCost.getDurationAndCosts().get(i).getDuration_Type_ID() ==
-                    UsingType.getUsingTypes().get(0).getUsing_Type_ID())
+                    UsingType.getUsingTypes().get(0).getUsing_Type_ID() &&
+                    DurationAndCost.getDurationAndCosts().get(i).getCar_Type_ID() == CarType.getCarTypes().get(0).getCar_Type_ID())
                 durationAndCosts.add(DurationAndCost.getDurationAndCosts().get(i).getDuration_Name() +
                         " " + DurationAndCost.getDurationAndCosts().get(i).getCost() + " TK");
         }
 
         ms_DurationMaterialSpinner.setItems(durationAndCosts);
+
         durationID = String.valueOf(DurationAndCost.getDurationAndCosts().get(0).getDuration_ID());
         whereToID = String.valueOf(UsingType.getUsingTypes().get(0).getUsing_Type_ID());
         carTypeId = String.valueOf(CarType.getCarTypes().get(0).getCar_Type_ID());
@@ -181,7 +184,8 @@ public class RequestCarFragment extends Fragment {
                 Log.i("post", ""+position);
                 for (i = 0; i<DurationAndCost.getDurationAndCosts().size(); i++) {
                     if (DurationAndCost.getDurationAndCosts().get(i).getDuration_Type_ID() ==
-                            UsingType.getUsingTypes().get(position).getUsing_Type_ID()) {
+                            UsingType.getUsingTypes().get(position).getUsing_Type_ID() &&
+                            DurationAndCost.getDurationAndCosts().get(i).getCar_Type_ID() == Integer.parseInt(carTypeId)) {
                         k++;
                         b = true;
                         durationAndCosts.add(DurationAndCost.getDurationAndCosts().get(i).getDuration_Name() +
@@ -200,6 +204,28 @@ public class RequestCarFragment extends Fragment {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
                 carTypeId = String.valueOf(CarType.getCarTypes().get(position).getCar_Type_ID());
+
+                ms_DurationMaterialSpinner.clearComposingText();
+                ms_DurationMaterialSpinner.setSelectedIndex(0);
+                ms_DurationMaterialSpinner.animate();
+                durationAndCosts.clear();
+                int k = 0;
+                int i = 0;
+                boolean b = false;
+                Log.i("post", ""+position);
+                for (i = 0; i<DurationAndCost.getDurationAndCosts().size(); i++) {
+                    if (DurationAndCost.getDurationAndCosts().get(i).getDuration_Type_ID() == Integer.parseInt(whereToID) &&
+                            DurationAndCost.getDurationAndCosts().get(i).getCar_Type_ID() ==
+                                    CarType.getCarTypes().get(position).getCar_Type_ID()) {
+                        k++;
+                        b = true;
+                        durationAndCosts.add(DurationAndCost.getDurationAndCosts().get(i).getDuration_Name() +
+                                " " + DurationAndCost.getDurationAndCosts().get(i).getCost() + " TK");
+                    }else if (b) break;
+                    Log.d("whertoUseinfor", whereToID + "->" + k+"->"+i);
+                }
+                durationID = String.valueOf(DurationAndCost.getDurationAndCosts().get(i-k).getDuration_ID());
+                ms_DurationMaterialSpinner.setItems(durationAndCosts);
                 Log.i("cartyep",carTypeId);
             }
         });
@@ -210,7 +236,8 @@ public class RequestCarFragment extends Fragment {
             public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
                 for (int i = 0; i<DurationAndCost.getDurationAndCosts().size(); i++ ){
                     Log.d("ON loop ", "onItemSelected:" + DurationAndCost.getDurationAndCosts().get(i).getDuration_Type_ID());
-                    if (DurationAndCost.getDurationAndCosts().get(i).getDuration_Type_ID() == Integer.parseInt(whereToID)){
+                    if (DurationAndCost.getDurationAndCosts().get(i).getDuration_Type_ID() == Integer.parseInt(whereToID) &&
+                            DurationAndCost.getDurationAndCosts().get(i).getCar_Type_ID()== Integer.parseInt(carTypeId)){
                         durationID = String.valueOf(DurationAndCost.getDurationAndCosts().get(i+position).getDuration_ID());
                         break;
                     }
@@ -319,10 +346,10 @@ public class RequestCarFragment extends Fragment {
                 new Messages(getActivity()).showNote(getResources().getString(R.string.note_one));
                 break;
             case R.id.whereInfoAppCompatImageButton:
-                new Messages(getActivity()).showNote(getResources().getString(R.string.note_one));
+                new Messages(getActivity()).showNote(getResources().getString(R.string.note_5km));
                 break;
             case R.id.durationInfoAppCompatImageButton:
-                new Messages(getActivity()).showNote(getResources().getString(R.string.note_one));
+                new Messages(getActivity()).showNote(getResources().getString(R.string.note_5tk));
                 break;
             case R.id.submitRequestAppCompatButton:
                 getDate();

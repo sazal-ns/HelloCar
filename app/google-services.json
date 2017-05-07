@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "819140526096",
+    "firebase_url": "https://hellocar-9f8f2.firebaseio.com",
+    "project_id": "hellocar-9f8f2",
+    "storage_bucket": "hellocar-9f8f2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819140526096:android:5168abf660045184",
+        "android_client_info": {
+          "package_name": "com.rtsoftbd.siddiqui.hellocar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "819140526096-t54fnqs8snh9v5tj7e03dsno722uec46.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rtsoftbd.siddiqui.hellocar",
+            "certificate_hash": "1107a334f2d417ae8495af2d3458a3a79b76d2ce"
+          }
+        },
+        {
+          "client_id": "819140526096-rfcdp5j70t76t50tqjrr96gffuouf0on.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCI-ls8sVjfjqpuB-p7cYr5BdfLb2QUvGw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "819140526096-rfcdp5j70t76t50tqjrr96gffuouf0on.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

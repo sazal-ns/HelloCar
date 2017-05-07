@@ -122,6 +122,7 @@ public class SettingsFragment extends Fragment {
                 break;
             case R.id.logoutAppCompatButton:
                 startActivity(new Intent(getActivity(), LoginActivity.class));
+                getActivity().finish();
                 break;
         }
     }

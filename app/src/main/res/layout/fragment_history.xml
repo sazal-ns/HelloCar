@@ -2,7 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/default_padding"
+    android:paddingTop="@dimen/default_padding"
+    android:paddingLeft="@dimen/default_padding"
+    android:paddingRight="@dimen/default_padding"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.rtsoftbd.siddiqui.hellocar.HistoryFragment">
 
@@ -19,20 +21,21 @@
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:layout_marginTop="@dimen/default_margin_gap"
-        android:layout_marginBottom="@dimen/default_margin_gap"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/bg"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/historyMaterialSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/historyMaterialSpinner"
         />
 
     <ListView
         android:id="@+id/list"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="900dp"
+        android:headerDividersEnabled="true"
         android:layout_marginTop="@dimen/default_margin_gap"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/historyMaterialSpinner"/>
 
 </android.support.constraint.ConstraintLayout>

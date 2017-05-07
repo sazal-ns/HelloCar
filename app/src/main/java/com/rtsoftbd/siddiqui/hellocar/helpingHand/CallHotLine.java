@@ -24,7 +24,7 @@ import com.rtsoftbd.siddiqui.hellocar.R;
  */
 
 public class CallHotLine extends Activity {
-    private static final String hotLine = "+8801915857610";
+    private static final String hotLine = "+8801911889138";
     private static final String SP = "ms";
 
     private static final int CALL_PERMISSION_CONSTANT = 100;

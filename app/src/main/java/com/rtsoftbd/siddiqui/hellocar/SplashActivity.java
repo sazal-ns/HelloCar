@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -18,7 +17,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.rtsoftbd.siddiqui.hellocar.helpingHand.ApplicationController;
 import com.rtsoftbd.siddiqui.hellocar.helpingHand.Boo;
-import com.rtsoftbd.siddiqui.hellocar.helpingHand.CallHotLine;
 import com.rtsoftbd.siddiqui.hellocar.helpingHand.Messages;
 import com.rtsoftbd.siddiqui.hellocar.models.CarType;
 import com.rtsoftbd.siddiqui.hellocar.models.DurationAndCost;
@@ -34,7 +32,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -43,11 +40,12 @@ public class SplashActivity extends AppCompatActivity {
     private static final String SP = "ms";
     private static final String PREF_KEY_SHORTCUT_ADDED = "PREF_KEY_SHORTCUT_ADDED";
 
-    @BindView(R.id.hotlineTitleTextView) TextView ms_HotlineTitleTextView;
     @BindView(R.id.progressBar) ProgressBar ms_ProgressBar;
 
     private SharedPreferences.Editor editor;
     private SharedPreferences sp;
+
+    private boolean isError = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +53,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
 
+        isError = false;
         ms_ProgressBar.setVisibility(View.INVISIBLE);
 
         sp = getSharedPreferences(SP, MODE_PRIVATE);
@@ -85,8 +84,6 @@ public class SplashActivity extends AppCompatActivity {
 
                         ms_ProgressBar.setVisibility(View.VISIBLE);
                         loadDate();
-                        /*startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                        finish();*/
 
                         return true;
                     }
@@ -117,7 +114,8 @@ public class SplashActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error.getMessage().contains("Unable to resolve host"))
+                isError = true;
+                if (error.toString().contains("Unable to resolve host"))
                     new Messages(SplashActivity.this).noInternet();
                 error.printStackTrace();
             }
@@ -140,7 +138,7 @@ public class SplashActivity extends AppCompatActivity {
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject jsonObject = array.getJSONObject(i);
                         DurationAndCost durationAndCost = new DurationAndCost(jsonObject.getString(Boo.REPLAY_DURATION_NAME), jsonObject.getInt(Boo.REPLAY_DURATION_ID),
-                                jsonObject.getInt(Boo.REPLAY_DURATION_TYPE_ID), jsonObject.getInt(Boo.REPLAY_COST));
+                                jsonObject.getInt(Boo.REPLAY_DURATION_TYPE_ID), jsonObject.getInt(Boo.REPLAY_COST), jsonObject.getInt(Boo.REPLAY_CAR_TYPE_ID));
                         DurationAndCost.setDurationAndCosts(durationAndCost);
                     }
                 } catch (JSONException e) {
@@ -150,7 +148,8 @@ public class SplashActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error.getMessage().contains("Unable to resolve host"))
+                isError = true;
+                if (error.toString().contains("Unable to resolve host"))
                     new Messages(SplashActivity.this).noInternet();
                 error.printStackTrace();
                 error.printStackTrace();
@@ -176,10 +175,10 @@ public class SplashActivity extends AppCompatActivity {
                         JSONObject jsonObject = array.getJSONObject(i);
                         UsingType usingType = new UsingType(jsonObject.getInt(Boo.REPLAY_USING_TYPE_ID), jsonObject.getString(Boo.REPLAY_USING_TYPE_NAME));
                         UsingType.setUsingTypes(usingType);
+                    }
 
                         startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                        finish();
-                    }
+                        SplashActivity.this.finish();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -187,7 +186,8 @@ public class SplashActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error.getMessage().contains("Unable to resolve host"))
+                isError = true;
+                if (error.toString().contains("Unable to resolve host"))
                     new Messages(SplashActivity.this).noInternet();
                 error.printStackTrace();
             }
@@ -201,11 +201,6 @@ public class SplashActivity extends AppCompatActivity {
             }
         };
         ApplicationController.getInstance().addToRequestQueue(requestUsingType, TAG);
-    }
-
-    @OnClick(R.id.hotlineTitleTextView)
-    public void onViewClicked() {
-        new CallHotLine(SplashActivity.this);
     }
 
     private void addShortCut() {

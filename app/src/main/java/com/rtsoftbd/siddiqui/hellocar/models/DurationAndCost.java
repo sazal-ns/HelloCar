@@ -9,18 +9,27 @@ import java.util.List;
 
 public class DurationAndCost {
     private  String duration_Name;
-    private  int duration_ID, duration_Type_ID, cost;
+    private  int duration_ID, duration_Type_ID, cost, Car_Type_ID;
 
     private static List<DurationAndCost> durationAndCosts = new ArrayList<>();
 
     public DurationAndCost() {
     }
 
-    public DurationAndCost(String duration_Name, int duration_ID, int duration_Type_ID, int cost) {
+    public DurationAndCost(String duration_Name, int duration_ID, int duration_Type_ID, int cost, int car_type_id) {
         this.duration_Name = duration_Name;
         this.duration_ID = duration_ID;
         this.duration_Type_ID = duration_Type_ID;
         this.cost = cost;
+        Car_Type_ID = car_type_id;
+    }
+
+    public int getCar_Type_ID() {
+        return Car_Type_ID;
+    }
+
+    public void setCar_Type_ID(int car_Type_ID) {
+        Car_Type_ID = car_Type_ID;
     }
 
     public String getDuration_Name() {

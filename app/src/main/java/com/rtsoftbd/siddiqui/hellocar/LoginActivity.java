@@ -1,6 +1,7 @@
 package com.rtsoftbd.siddiqui.hellocar;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,11 +25,15 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.firebase.crash.FirebaseCrash;
 import com.rtsoftbd.siddiqui.hellocar.helpingHand.ApplicationController;
 import com.rtsoftbd.siddiqui.hellocar.helpingHand.Boo;
 import com.rtsoftbd.siddiqui.hellocar.helpingHand.CallHotLine;
 import com.rtsoftbd.siddiqui.hellocar.helpingHand.Messages;
+import com.rtsoftbd.siddiqui.hellocar.models.CarType;
+import com.rtsoftbd.siddiqui.hellocar.models.DurationAndCost;
 import com.rtsoftbd.siddiqui.hellocar.models.User;
+import com.rtsoftbd.siddiqui.hellocar.models.UsingType;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,8 +61,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
-        ApplicationController.getInstance().cancelPendingRequests("SplashActivity");
+        if (UsingType.getUsingTypes().size()<=0 && DurationAndCost.getDurationAndCosts().size()<=0 && CarType.getCarTypes().size()<=0){
+            ApplicationController.getInstance().cancelPendingRequests("SplashActivity");
+            startActivity(new Intent(LoginActivity.this, SplashActivity.class));
+            LoginActivity.this.finish();
+        }
     }
 
     @OnClick({R.id.loginAppCompatButton, R.id.forgetTextView, R.id.regTextView, R.id.hotlineTitleTextView})
@@ -73,7 +82,6 @@ public class LoginActivity extends AppCompatActivity {
                 break;
             case R.id.regTextView:
                 startActivity(new Intent(this, RegistrationActivity.class));
-                finish();
                 break;
             case R.id.hotlineTitleTextView:
                 new CallHotLine(this);
@@ -142,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
                                                             authorized[0] = false;
                                                         }else {
                                                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                                        finish();
+                                                        LoginActivity.this.finish();
                                                         }
                                                     }
                                                 }, new Response.ErrorListener() {
@@ -243,8 +251,4 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
 }
