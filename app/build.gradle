@@ -2,8 +2,8 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-        config {
-            keyAlias 'siddiqui_sazal_ns'
+        one {
+            keyAlias 'sazal_siddiqui_ns'
             keyPassword '13191319'
             storeFile file('D:/android_key.jks')
             storePassword '13191319'
@@ -18,8 +18,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        signingConfig signingConfigs.config
         vectorDrawables.useSupportLibrary = true
+        signingConfig signingConfigs.one
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES.txt'
@@ -37,8 +37,7 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
-            pseudoLocalesEnabled true
+            signingConfig signingConfigs.one
         }
     }
     productFlavors {

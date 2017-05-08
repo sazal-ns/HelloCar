@@ -118,6 +118,8 @@ public class ProfileFragment extends Fragment {
     private static final int CALL_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
     private boolean sentToSettings = false;
+    String[] permissionsRequired = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE};
 
     private Bitmap bitmap;
 
@@ -196,9 +198,10 @@ public class ProfileFragment extends Fragment {
                 BitmapDrawable bitmapDrawable = ((BitmapDrawable) ms_ThumbnailImageView.getDrawable());
                 bitmap = bitmapDrawable .getBitmap();
 
-                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
-                        PackageManager.PERMISSION_GRANTED) {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                if (ActivityCompat.checkSelfPermission(getActivity(), permissionsRequired[0]) != PackageManager.PERMISSION_GRANTED
+                        || ActivityCompat.checkSelfPermission(getActivity(), permissionsRequired[1]) != PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),permissionsRequired[0])
+                            || ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),permissionsRequired[1])){
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setTitle("Need Storage access Permission");
                         builder.setMessage("To save your profile picture, this app needs write storage permission.");
@@ -206,8 +209,7 @@ public class ProfileFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
-                                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                        CALL_PERMISSION_CONSTANT);
+                                ActivityCompat.requestPermissions(getActivity(),permissionsRequired,CALL_PERMISSION_CONSTANT);
                             }
                         });
                         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -217,7 +219,7 @@ public class ProfileFragment extends Fragment {
                             }
                         });
                         builder.show();
-                    }else if (sp.getBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,false)){
+                    }else if (sp.getBoolean(permissionsRequired[0],false)){
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setTitle("Need Storage access Permission");
                         builder.setMessage("To save your profile picture, this app needs write storage permission.");
@@ -241,11 +243,11 @@ public class ProfileFragment extends Fragment {
                         });
                         builder.show();
                     }else {
-                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        ActivityCompat.requestPermissions(getActivity(), permissionsRequired,
                                 CALL_PERMISSION_CONSTANT);
                     }
                     SharedPreferences.Editor editor = sp.edit();
-                    editor.putBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,true);
+                    editor.putBoolean(permissionsRequired[0],true);
                     editor.apply();
                 }else saveImage(bitmap, User.getImageName());
             }
@@ -261,14 +263,27 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull final String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == CALL_PERMISSION_CONSTANT){
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+
+            boolean allgranted = false;
+            for(int i=0;i<grantResults.length;i++){
+                if(grantResults[i]==PackageManager.PERMISSION_GRANTED){
+                    allgranted = true;
+                } else {
+                    allgranted = false;
+                    break;
+                }
+            }
+
+
+            if (allgranted){
                 saveImage(bitmap, User.getImageName());
             }else {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),permissionsRequired[0])
+                        || ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),permissionsRequired[1])){
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setTitle("Need Storage access Permission");
                     builder.setMessage("To save your profile picture, this app needs write storage permission.");
@@ -277,7 +292,7 @@ public class ProfileFragment extends Fragment {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
 
-                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            ActivityCompat.requestPermissions(getActivity(), permissionsRequired,
                                     CALL_PERMISSION_CONSTANT);
 
                         }
@@ -302,7 +317,8 @@ public class ProfileFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (sentToSettings){
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            if ((ActivityCompat.checkSelfPermission(getActivity(), permissionsRequired[0]) == PackageManager.PERMISSION_GRANTED) &&
+                    (ActivityCompat.checkSelfPermission(getActivity(), permissionsRequired[1]) == PackageManager.PERMISSION_GRANTED) ) {
                 saveImage(bitmap, User.getImageName());
             }
         }
@@ -426,7 +442,8 @@ public class ProfileFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_PERMISSION_SETTING){
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+            if ((ActivityCompat.checkSelfPermission(getActivity(), permissionsRequired[0]) == PackageManager.PERMISSION_GRANTED) &&
+                    (ActivityCompat.checkSelfPermission(getActivity(), permissionsRequired[1]) == PackageManager.PERMISSION_GRANTED)){
                 saveImage(bitmap, User.getImageName());
             }
         }
