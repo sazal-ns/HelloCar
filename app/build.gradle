@@ -15,8 +15,8 @@ android {
         applicationId "com.rtsoftbd.siddiqui.hellocar"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 2
-        versionName "1.1"
+        versionCode 3
+        versionName "Audi"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         signingConfig signingConfigs.one
