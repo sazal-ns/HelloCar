@@ -20,6 +20,7 @@ import com.rtsoftbd.siddiqui.hellocar.helpingHand.Boo;
 import com.rtsoftbd.siddiqui.hellocar.helpingHand.Messages;
 import com.rtsoftbd.siddiqui.hellocar.models.CarType;
 import com.rtsoftbd.siddiqui.hellocar.models.DurationAndCost;
+import com.rtsoftbd.siddiqui.hellocar.models.Notes;
 import com.rtsoftbd.siddiqui.hellocar.models.UsingType;
 
 import org.json.JSONArray;
@@ -177,8 +178,8 @@ public class SplashActivity extends AppCompatActivity {
                         UsingType.setUsingTypes(usingType);
                     }
 
-                        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                        SplashActivity.this.finish();
+                        /*startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                        SplashActivity.this.finish();*/
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -201,7 +202,45 @@ public class SplashActivity extends AppCompatActivity {
             }
         };
         ApplicationController.getInstance().addToRequestQueue(requestUsingType, TAG);
+
+        final StringRequest requestNotes = new StringRequest(Request.Method.POST, Boo.MS_BAG, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray array = new JSONArray(response);
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject jsonObject = array.getJSONObject(i);
+                        Notes.setNote(jsonObject.getString("Notes"));
+                    }
+
+                        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                        SplashActivity.this.finish();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                isError = true;
+                if (error.toString().contains("Unable to resolve host"))
+                    new Messages(SplashActivity.this).noInternet();
+                error.printStackTrace();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put(Boo.KEY_TABLE, Boo.KEY_NOTES);
+
+                return params;
+            }
+        };
+        ApplicationController.getInstance().addToRequestQueue(requestNotes, TAG);
+
     }
+
+
 
     private void addShortCut() {
         boolean shortCutWasAlreadyAdded = sp.getBoolean(PREF_KEY_SHORTCUT_ADDED, false);

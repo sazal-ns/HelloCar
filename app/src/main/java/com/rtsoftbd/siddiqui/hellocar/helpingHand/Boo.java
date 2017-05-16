@@ -5,9 +5,9 @@ package com.rtsoftbd.siddiqui.hellocar.helpingHand;
  */
 
 public final class Boo {
-    private static final String BASE = "http://hellocar.ga/Mobile_api/";
+    private static final String BASE = "http://hellocar24.com/Mobile_api/";
 
-    public static final String PICTURE_URL = "http://hellocar.ga/assets/uploads/user/";
+    public static final String PICTURE_URL = "http://hellocar24.com/assets/uploads/user/";
 
     public static final String MS_REG = BASE.concat("user_register");
     public static final String MS_BAG = BASE.concat("databag");
@@ -58,6 +58,8 @@ public final class Boo {
     public static final String CAR_TYPE = "car_type";
     public static final String DURATION  ="duration";
     public static final String USING_TYPE = "using_type";
+
+    public static final String KEY_NOTES = "notes";
 
     /*Common Replay*/
     public static final String REPLAY_ERROR = "error";

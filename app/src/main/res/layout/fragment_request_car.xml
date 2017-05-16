@@ -53,21 +53,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_10"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/whereInfoAppCompatImageButton"
-            app:layout_constraintTop_toBottomOf="@+id/carCatMaterialSpinner"/>
-
-        <android.support.v7.widget.AppCompatImageButton
-            android:id="@+id/whereInfoAppCompatImageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_info_blue_900_36dp"
-            android:background="@android:color/transparent"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginLeft="@dimen/default_margin_gap"
-            app:layout_constraintLeft_toRightOf="@+id/whereMaterialSpinner"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/carCatMaterialSpinner"
-            android:onClick="onViewClicked"/>
+            app:layout_constraintTop_toBottomOf="@+id/carCatMaterialSpinner"/>
 
         <com.jaredrummler.materialspinner.MaterialSpinner
             android:id="@+id/durationMaterialSpinner"
@@ -75,21 +62,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_10"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/durationInfoAppCompatImageButton"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toTextInputLayout"/>
 
-        <android.support.v7.widget.AppCompatImageButton
-            android:id="@+id/durationInfoAppCompatImageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_info_blue_900_36dp"
-            android:background="@android:color/transparent"
-            android:layout_marginTop="@dimen/margin_10"
-            android:layout_marginLeft="@dimen/default_margin_gap"
-            app:layout_constraintLeft_toRightOf="@+id/durationMaterialSpinner"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toTextInputLayout"
-            android:onClick="onViewClicked"/>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/fromTextInputLayout"

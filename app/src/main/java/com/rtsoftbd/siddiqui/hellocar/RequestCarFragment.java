@@ -28,6 +28,7 @@ import com.rtsoftbd.siddiqui.hellocar.helpingHand.Boo;
 import com.rtsoftbd.siddiqui.hellocar.helpingHand.Messages;
 import com.rtsoftbd.siddiqui.hellocar.models.CarType;
 import com.rtsoftbd.siddiqui.hellocar.models.DurationAndCost;
+import com.rtsoftbd.siddiqui.hellocar.models.Notes;
 import com.rtsoftbd.siddiqui.hellocar.models.User;
 import com.rtsoftbd.siddiqui.hellocar.models.UsingType;
 
@@ -66,9 +67,7 @@ public class RequestCarFragment extends Fragment {
     @BindView(R.id.carCatMaterialSpinner) MaterialSpinner ms_CarCatMaterialSpinner;
     @BindView(R.id.carCatInfoAppCompatImageButton) AppCompatImageButton ms_CarCatInfoAppCompatImageButton;
     @BindView(R.id.whereMaterialSpinner) MaterialSpinner ms_WhereMaterialSpinner;
-    @BindView(R.id.whereInfoAppCompatImageButton) AppCompatImageButton ms_WhereInfoAppCompatImageButton;
     @BindView(R.id.durationMaterialSpinner) MaterialSpinner ms_DurationMaterialSpinner;
-    @BindView(R.id.durationInfoAppCompatImageButton) AppCompatImageButton ms_DurationInfoAppCompatImageButton;
     @BindView(R.id.fromTextInputEditText) TextInputEditText ms_FromTextInputEditText;
     @BindView(R.id.toTextInputEditText) TextInputEditText ms_ToTextInputEditText;
     @BindView(R.id.dateTextInputEditText) TextInputEditText ms_DateTextInputEditText;
@@ -339,17 +338,11 @@ public class RequestCarFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.carCatInfoAppCompatImageButton, R.id.whereInfoAppCompatImageButton, R.id.durationInfoAppCompatImageButton, R.id.submitRequestAppCompatButton})
+    @OnClick({R.id.carCatInfoAppCompatImageButton, R.id.submitRequestAppCompatButton})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.carCatInfoAppCompatImageButton:
-                new Messages(getActivity()).showNote(getResources().getString(R.string.note_one));
-                break;
-            case R.id.whereInfoAppCompatImageButton:
-                new Messages(getActivity()).showNote(getResources().getString(R.string.note_5km));
-                break;
-            case R.id.durationInfoAppCompatImageButton:
-                new Messages(getActivity()).showNote(getResources().getString(R.string.note_5tk));
+                new Messages(getActivity()).showNote(Notes.getNote());
                 break;
             case R.id.submitRequestAppCompatButton:
                 getDate();
