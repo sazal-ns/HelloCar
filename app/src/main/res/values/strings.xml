@@ -81,7 +81,7 @@
     <string name="note">Note</string>
     <string name="note_one">If you want to use out of city/additional hour/additional day/additional side etc please contact with us.\nIf you apply any illegal activities, we are not liable for that\'s matter, we\'ll take any legal action against illegal activities.\n If any complain about drivers please call us, no bargain with driver.\nWe are able to apply any decision for anytime any rent rejection/cancel.\nSmoking is not allow in the car.</string>
     <string name="exit">Are you sure you want to exit?</string>
-    <string name="note_5km">When you hire a car to using in city, if you go out 5KM from city, you will pay additional TK-500\nIf you want use car anywhere please contact with us.</string>
-    <string name="note_5tk">If you pass your selected time, you will pay Tk 5 per minute.\n Clients always bear all parking cost,bridge toll etc.</string>
+    <string name="note_5km">When you hire a car to using in city, if you go out 10KM from city, you will pay additional TK-500\nIf you use for marriage ceremony(decoration with flower) you\'ll pay additional 500 TK.\nIf you want use car anywhere please contact with us.\nIf you want to use out of city/additional hour/additional day/additional side etc please contact with us\nAirport Pick or Drop Price only here, if you use for return additional Tk-500 you\'ll pay &amp; time maximum 4 Hours.</string>
+    <string name="note_5tk">If you pass your selected time, you will pay Tk 5 per minute.\n Clients always bear all parking cost,bridge toll etc.\nNot allow to use car after 11:00pm.</string>
 
 </resources>
